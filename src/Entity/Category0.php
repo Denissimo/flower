@@ -7,7 +7,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-class Category
+class Category0
 {
     /**
      * @var string
@@ -24,7 +24,7 @@ class Category
     private $nameEng;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bouquet", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="Bouquet0", mappedBy="category")
      */
     private $bouquets;
 

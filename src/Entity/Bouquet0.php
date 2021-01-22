@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-class Bouquet
+class Bouquet0
 {
     /**
      * @var string
@@ -56,7 +56,7 @@ class Bouquet
     private $sortIndex = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="bouquets")
+     * @ORM\ManyToOne(targetEntity="Category0", inversedBy="bouquets")
      */
     private $category;
 }
