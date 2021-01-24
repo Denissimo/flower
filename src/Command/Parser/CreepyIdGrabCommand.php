@@ -26,18 +26,18 @@ class CreepyIdGrabCommand extends Command
      * CreepyIdGrabCommand constructor.
      *
      * @param EntityManager $entityManager
-     * @param Client $client
+     * @param Client $repository
      * @param string|null $name
      */
     public function __construct(
         EntityManager $entityManager,
-        Client $client,
+        Client $repository,
         string $name = null
     )
     {
         parent::__construct($name);
         $this->entityManager = $entityManager;
-        $this->client = $client;
+        $this->client = $repository;
     }
 
     protected function configure()

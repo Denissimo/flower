@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210123200550 extends AbstractMigration
+final class Version20210124103845 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -25,9 +25,10 @@ final class Version20210123200550 extends AbstractMigration
             creepy_id_id INT NOT NULL, 
             title VARCHAR(255) DEFAULT NULL, 
             content LONGTEXT DEFAULT NULL, 
-            UNIQUE INDEX UNIQ_2843860332734F7A (creepy_id_id), 
-            PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB'
-        );
+            created_at DATETIME NOT NULL, 
+            INDEX IDX_2843860332734F7A (creepy_id_id), 
+            PRIMARY KEY(id)
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE creepy_data ADD CONSTRAINT FK_2843860332734F7A FOREIGN KEY (creepy_id_id) REFERENCES creepy_id (id)');
         $this->addSql('DROP TABLE ext_translations');
     }

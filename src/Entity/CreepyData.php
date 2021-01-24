@@ -38,7 +38,13 @@ class CreepyData
     private $createdAt;
 
     /**
-     * @ORM\OneToOne(targetEntity=CreepyId::class, inversedBy="creepyData", cascade={"persist", "remove"})
+     * @ORM\Column(type="boolean", nullable=true)
+     * @var bool
+     */
+    private $active;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=CreepyId::class, inversedBy="creepyData", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $creepyId;
@@ -100,6 +106,26 @@ class CreepyData
     public function setCreatedAt(DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     *
+     * @return CreepyData
+     */
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }

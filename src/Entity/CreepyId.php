@@ -36,7 +36,7 @@ class CreepyId
     private $parsedAt;
 
     /**
-     * @ORM\OneToOne(targetEntity=CreepyData::class, mappedBy="creepyId", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=CreepyData::class, mappedBy="creepyId", cascade={"persist", "remove"})
      */
     private $creepyData;
 
