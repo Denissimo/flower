@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CreepyDataRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use DateTimeImmutable;
 
 /**
  * @ORM\Entity(repositoryClass=CreepyDataRepository::class)
@@ -26,6 +28,14 @@ class CreepyData
      * @ORM\Column(type="text", nullable=true)
      */
     private $content;
+
+    /**
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created_at", type="datetime")
+     * @var DateTimeImmutable
+     */
+    private $createdAt;
 
     /**
      * @ORM\OneToOne(targetEntity=CreepyId::class, inversedBy="creepyData", cascade={"persist", "remove"})
@@ -70,6 +80,26 @@ class CreepyData
     public function setCreepyId(CreepyId $creepyId): self
     {
         $this->creepyId = $creepyId;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTimeImmutable
+     */
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTimeImmutable $createdAt
+     *
+     * @return CreepyData
+     */
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
