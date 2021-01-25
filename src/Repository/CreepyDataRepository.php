@@ -20,7 +20,7 @@ class CreepyDataRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return CreepyData[] Returns an array of CreepyData objects
+    //  * @return CreepyDataAdmin[] Returns an array of CreepyDataAdmin objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class CreepyDataRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?CreepyData
+    public function findOneBySomeField($value): ?CreepyDataAdmin
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')
