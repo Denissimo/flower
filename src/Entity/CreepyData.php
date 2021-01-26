@@ -30,6 +30,12 @@ class CreepyData
     private $content;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $part;
+
+    /**
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
@@ -126,6 +132,26 @@ class CreepyData
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPart(): int
+    {
+        return $this->part;
+    }
+
+    /**
+     * @param int $part
+     *
+     * @return CreepyData
+     */
+    public function setPart(int $part): self
+    {
+        $this->part = $part;
 
         return $this;
     }

@@ -2,8 +2,8 @@
 
 namespace App\Command\Parser;
 
+use App\Command\Parser\ImageData\ImageData;
 use App\Entity\CreepyData;
-use App\Entity\CreepyId;
 use App\Entity\CreepyImages;
 use App\Repository\CreepyDataRepository;
 use App\Repository\CreepyImagesRepository;
@@ -11,7 +11,6 @@ use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface as Client;
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Twig\Environment as Twig;
 
@@ -71,38 +70,42 @@ class CreepyFb2BuildCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $imageData = ImageData::$images;
+        for ($part = 1; $part <= 5; $part++) {
+            $stories = $this->repository->findBy(
+                ['part' => $part],
+                ['id' => Criteria::ASC]
+            );
+//        $stories = $this->repository->findAll();
+            $images = $this->imageRepository->loadByUrl();
+            $storiesWithImages = $this->replaceImages($stories, $images);
+            $render = $this->twig->render(
+                'fb2.html.twig',
+                [
+                    'stories' => $storiesWithImages['stories'],
+                    'images' => $storiesWithImages['images'],
+                    'image_data' => $imageData,
+                    'part' => $part
+                ]
+            );
 
-//        $stories = $this->repository->findBy(
-//            ['active' => 0],
-//            ['id' => Criteria::ASC],
-//            10
+//        $storiesWithoutImages = $this->deleteImages($stories);
+//        $renderNoImag = $this->twig->render(
+//            'fb2_no_imag.twig',
+//            [
+//                'stories' => $storiesWithoutImages
+//            ]
 //        );
-        $stories = $this->repository->findAll();
-        $images = $this->imageRepository->loadByUrl();
-        $storiesWithImages = $this->replaceImages($stories, $images);
-        $render = $this->twig->render(
-            'fb2.html.twig',
-            [
-                'stories' => $storiesWithImages,
-                'images' => $images
-            ]
-        );
-        $storiesWithoutImages = $this->deleteImages($stories);
-        $renderNoImag = $this->twig->render(
-            'fb2_no_imag.twig',
-            [
-                'stories' => $storiesWithoutImages
-            ]
-        );
 
-        file_put_contents(
-            'public/creepy.fb2',
-            $render
-        );
-        file_put_contents(
-            'public/creepy_no_imag.fb2',
-            $renderNoImag
-        );
+            file_put_contents(
+                'public/creepy_part' . $part . '.fb2',
+                $render
+            );
+        }
+//        file_put_contents(
+//            'public/creepy_no_imag.fb2',
+//            $renderNoImag
+//        );
 
         return 0;
     }
@@ -111,10 +114,11 @@ class CreepyFb2BuildCommand extends Command
      * @param CreepyData[] $stories
      * @param CreepyImages[] $images
      *
-     * @return CreepyData[]
+     * @return []
      */
     private function replaceImages($stories, $images)
     {
+        $storyImages = [];
         foreach ($stories as $story) {
             $storyContent = $story->getContent();
             preg_match_all(
@@ -127,13 +131,17 @@ class CreepyFb2BuildCommand extends Command
                 foreach ($imagesFound[0] as $key => $val) {
                     $imageUrl = $imagesFound[1][$key];
                     $replacement = sprintf('<image l:href="#%s" />', $images[$imageUrl]->getHash());
+                    $storyImages[] = $images[$imageUrl];
                     $storyContent = str_replace($val, $replacement, $storyContent);
                 }
                 $story->setContent($storyContent);
             }
         }
 
-        return $stories;
+        return [
+            'stories' => $stories,
+            'images' => $storyImages
+        ];
     }
 
     /**
