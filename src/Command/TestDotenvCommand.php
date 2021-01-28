@@ -7,10 +7,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Dotenv\Dotenv;
 
-class TestCommand extends Command
+class TestDotenvCommand extends Command
 {
-    protected static $defaultName = 'app:test';
-
     /**
      * @var string
      */
@@ -32,9 +30,9 @@ class TestCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:test')
-            ->setDescription('Its a Test.')
-            ->setHelp('Just a test command');
+            ->setName('test:dotenv')
+            ->setDescription('Dotenv Test.')
+            ->setHelp('Dotenv test command');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -43,7 +41,6 @@ class TestCommand extends Command
         $dotenv->load(__DIR__.'/../../.env');
 
         $appEnv = getenv('IMAGES_DATA');
-        $appEnv2 = getenv("resolve:DATABASE_URL");
         $ip = getenv("REMOTE_ADDR");
         $env = getenv();
 
