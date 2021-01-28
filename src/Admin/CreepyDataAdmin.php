@@ -13,7 +13,15 @@ final class CreepyDataAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->add('title', TextType::class)
-            ->add('content')
+            ->add(
+                'content',
+                null,
+                [
+                    "attr" => [
+                        "class" => "ckeditor"
+                    ]
+                ]
+            )
         ;
     }
 
