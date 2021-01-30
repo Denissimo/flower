@@ -51,6 +51,12 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native",  group: "Creepy", label: "CreepyStories" }
 
+    admin.flower_category:
+        class: App\Admin\FlowerCategoryAdmin
+        arguments: [~, App\Entity\FlowerCategory, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native",  group: "Flowers", label: "FlowerCategory" }
+
     admin.flower_photo:
         class: App\Admin\FlowerPhotoAdmin
         arguments: [~, App\Entity\FlowerPhoto, ~]

@@ -55,6 +55,7 @@ final class FlowerPhotoAdmin extends AbstractAdmin
     {
         $listMapper->addIdentifier('id')
             ->add('isThumbnail')
+            ->add('description')
             ->add(
                 'name',
                 null,
