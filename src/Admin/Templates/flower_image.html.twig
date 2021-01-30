@@ -1,0 +1,8 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% if value %}
+       {% set img_path = admin.imageShowPath ~ value %}
+        <img src = "{{ img_path }}" width="250px" />
+    {% endif %}
+{% endblock %}

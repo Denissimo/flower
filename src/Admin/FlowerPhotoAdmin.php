@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Dotenv\Dotenv;
+use DateTimeImmutable;
 
 final class FlowerPhotoAdmin extends AbstractAdmin
 {
@@ -16,6 +16,26 @@ final class FlowerPhotoAdmin extends AbstractAdmin
      * @var string
      */
     private $imagePath;
+
+    /**
+     * @var string
+     */
+    private $rootPath;
+
+    /**
+     * @var string
+     */
+    public $imageShowPath;
+
+    public function __construct($code, $class, $baseControllerName, $imagePath, $rootPath, $imageShowPath)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->imagePath = $imagePath;
+        $this->rootPath = $rootPath;
+        $this->imageShowPath = $imageShowPath;
+    }
+
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -34,7 +54,17 @@ final class FlowerPhotoAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper->addIdentifier('id')
-            ->add('isThumbnail');
+            ->add('isThumbnail')
+            ->add(
+                'name',
+                null,
+                [
+                    'label' => 'Picture',
+                    'template' => "@sonata_templates/flower_image.html.twig",
+                    'row_align' => 'center'
+                ]
+            )
+        ;
     }
 
     /**
@@ -58,18 +88,43 @@ final class FlowerPhotoAdmin extends AbstractAdmin
      */
     private function manageFileUpload($image)
     {
-        $image->upload();
+        $this->upload($image);
     }
 
     /**
-     * @param string $imagePath
-     *
-     * @return FlowerPhotoAdmin
+     * @param FlowerPhoto $image
      */
-    public function setImagePath(string $imagePath): FlowerPhotoAdmin
+    private function upload(FlowerPhoto $image)
     {
-        $this->imagePath = $imagePath;
+        if (null === $image->getFile()) {
+            return;
+        }
 
-        return $this;
+        $imageFullPath = $this->buildImageFullPath();
+
+        $file = $image->getFile();
+        $randomName = (new DateTimeImmutable())->format('YmdHis') .
+            rand(1000, 999999) . $image->getFile()->getClientOriginalName();
+        $image->setName($randomName);
+        $file->move(
+            $imageFullPath,
+            $randomName
+        );
+
+        // set the path property to the filename where you've saved the file
+        $this->filename = $image->getFile()->getClientOriginalName();
+
+        // clean up the file property as you won't need it anymore
+        $image->setFile(null);
+    }
+
+    /**
+     * @return string
+     */
+    private function buildImageFullPath()
+    {
+        $fullPath = $this->rootPath . $this->imagePath;
+
+        return $fullPath;
     }
 }

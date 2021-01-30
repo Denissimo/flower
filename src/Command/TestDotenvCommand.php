@@ -40,7 +40,6 @@ class TestDotenvCommand extends Command
         $dotenv = new Dotenv();
         $dotenv->load(__DIR__.'/../../.env');
 
-        $appEnv = getenv('IMAGES_DATA');
         $ip = getenv("REMOTE_ADDR");
         $env = getenv();
 
