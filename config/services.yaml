@@ -57,6 +57,13 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native",  group: "Flowers", label: "FlowerCategory" }
 
+    admin.flower_bouquet:
+        class: App\Admin\FlowerBouquetAdmin
+        arguments: [~, App\Entity\FlowerBouquet, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Flowers", label: "FlowerBouquet" }
+
+
     admin.flower_photo:
         class: App\Admin\FlowerPhotoAdmin
         arguments: [~, App\Entity\FlowerPhoto, ~]

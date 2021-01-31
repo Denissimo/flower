@@ -6,6 +6,7 @@ Id: Номер
 CreepyStories: Жуткие истории
 
 FlowerPhoto: Фотографии Букетов
+FlowerBouquet: Букеты
 Flower Photo List: Список фотографий букетов
 Is Thumbnail: Эскиз
 File: Файл
@@ -13,12 +14,16 @@ Picture: Изображение
 Description: Описание
 
 FlowerCategory: Типы Букетов
-Name Rus: Название по-русски
+Name Rus: Название
 Name Eng: Название по-английски
-Desc Rus: Описание по-русски
+Desc Rus: Описание
 Desc Eng: Описание по-английски
 Least Qty: Минимальное кол-во
 Least Sum: Минимальная сумма
 Sort Index: Приоритет сортировки
 Flower Category List: Список категорий цветов
 Flower Category Create: Создать категорию цветов
+Least Quantity: Минимальное кол-во
+Category: Категория
+Flower Bouquet List: Список букетов
+Flower Bouquet Create: Создать букет

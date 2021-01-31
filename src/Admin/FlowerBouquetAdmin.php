@@ -2,23 +2,30 @@
 
 namespace App\Admin;
 
+use App\Entity\FlowerBouquet;
+use App\Entity\FlowerCategory;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 
-final class FlowerCategoryAdmin extends AbstractAdmin
+final class FlowerBouquetAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->add('nameRus')
-//            ->add('nameEng')
             ->add('descRus')
-//            ->add('descEng')
-            ->add('leastQty')
+            ->add('price')
+            ->add('leastQuantity')
             ->add('leastSum')
             ->add('sortIndex')
+            ->add('category', ModelAutocompleteType::class, [
+                'property' => 'nameRus',
+                'class' => FlowerCategory::class
+            ])
         ;
     }
 
@@ -26,7 +33,7 @@ final class FlowerCategoryAdmin extends AbstractAdmin
     {
         $datagridMapper->add('nameRus')
 //            ->add('nameEng')
-            ->add('leastQty')
+            ->add('leastQuantity')
             ->add('leastSum');
     }
 
@@ -34,10 +41,8 @@ final class FlowerCategoryAdmin extends AbstractAdmin
     {
         $listMapper->addIdentifier('id')
             ->add('nameRus')
-//            ->add('nameEng')
             ->add('descRus')
-//            ->add('descEng')
-            ->add('leastQty')
+            ->add('leastQuantity')
             ->add('leastSum')
             ->add('sortIndex')
         ;

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\FlowerBouquetRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use DateTimeImmutable;
 
 /**
  * @ORM\Entity(repositoryClass=FlowerBouquetRepository::class)
@@ -71,6 +73,25 @@ class FlowerBouquet
      * @ORM\Column(type="integer", nullable=true)
      */
     private $leastSum;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"default":0})
+     */
+    private $price;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     * @var DateTimeImmutable
+     */
+    private $createdAt;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var DateTimeImmutable
+     */
+    private $updatedAt;
 
     public function getId(): ?int
     {
@@ -207,5 +228,49 @@ class FlowerBouquet
         $this->leastSum = $leastSum;
 
         return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?int $price): self
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getNameRus();
     }
 }
