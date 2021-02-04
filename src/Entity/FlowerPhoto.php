@@ -122,4 +122,13 @@ class FlowerPhoto extends UploadedFile
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getDescription() ?? 'no description';
+//        return '<img src="https://svalko.org/data/2013_08_08_12_02_pbs_twimg_com_media_BRIUKgTCMAIecyk.jpg" />';
+    }
 }

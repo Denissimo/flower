@@ -10,3 +10,8 @@ app_lucky_number:
 main:
   path: /
   controller: App\Controller\MainController::main
+
+basket.post:
+  path: /basket
+  controller: App\Controller\BasketController::add
+  methods: [POST]

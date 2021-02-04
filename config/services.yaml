@@ -45,6 +45,9 @@ services:
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
 
+    custom.translation.universal:
+        class: App\Service\CustomLabelTranslatorStrategy
+
     admin.category:
         class: App\Admin\CreepyDataAdmin
         arguments: [~, App\Entity\CreepyData, ~]
@@ -61,13 +64,13 @@ services:
         class: App\Admin\FlowerBouquetAdmin
         arguments: [~, App\Entity\FlowerBouquet, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Flowers", label: "FlowerBouquet" }
+            - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native", group: "Flowers", label: "FlowerBouquet" }
 
 
     admin.flower_photo:
         class: App\Admin\FlowerPhotoAdmin
         arguments: [~, App\Entity\FlowerPhoto, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Flowers", label: "FlowerPhoto" }
+            - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native", group: "Flowers", label: "FlowerPhoto" }
 #        calls:
 #            - [ setImagePath, [ "%env(IMAGES_PATH)%" ] ]

@@ -1,7 +1,9 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-    translator: { fallbacks: ['%locale%'] }
+    translator:
+        fallbacks: ['%locale%']
+#        enabled: false
     #csrf_protection: true
     #http_method_override: true
 
