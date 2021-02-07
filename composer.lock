@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8dd326757444a1ed2b0157b9a7348b38",
+    "content-hash": "8819145daf8fa259a84cf0bd3985acf5",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1694,6 +1694,67 @@
                 "wiki": "https://github.com/Atlantic18/DoctrineExtensions/tree/main/doc"
             },
             "time": "2021-01-23T23:40:14+00:00"
+        },
+        {
+            "name": "harmbandstra/swagger-ui-bundle",
+            "version": "4.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/harmbandstra/swagger-ui-bundle.git",
+                "reference": "4779d9cf3f29d2550a1ab14f5bfe75c25b5876df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/harmbandstra/swagger-ui-bundle/zipball/4779d9cf3f29d2550a1ab14f5bfe75c25b5876df",
+                "reference": "4779d9cf3f29d2550a1ab14f5bfe75c25b5876df",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.2 || ^8.0",
+                "swagger-api/swagger-ui": "^3.0",
+                "symfony/config": "^4.0|^5.0",
+                "symfony/dependency-injection": "^4.0|^5.0",
+                "symfony/framework-bundle": "^4.0|^5.0",
+                "symfony/http-kernel": "^4.0|^5.0",
+                "symfony/routing": "^4.0|^5.0",
+                "symfony/yaml": "^4.0|^5.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.8",
+                "phpspec/prophecy": "^1.8",
+                "phpunit/phpunit": "^8.5",
+                "symfony/browser-kit": "^4.0|^5.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "HarmBandstra\\SwaggerUiBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "src"
+            ],
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "description": "Exposes swagger UI inside your Symfony project through a route (eg. /docs)",
+            "homepage": "https://github.com/harmbandstra/swagger-ui-bundle",
+            "keywords": [
+                "api",
+                "bundle",
+                "doc",
+                "php",
+                "swagger",
+                "swagger-ui",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/harmbandstra/swagger-ui-bundle/issues",
+                "source": "https://github.com/harmbandstra/swagger-ui-bundle/tree/4.4.0"
+            },
+            "time": "2020-12-17T20:48:03+00:00"
         },
         {
             "name": "jms/metadata",
@@ -3636,6 +3697,67 @@
                 }
             ],
             "time": "2021-01-05T10:14:49+00:00"
+        },
+        {
+            "name": "swagger-api/swagger-ui",
+            "version": "v3.41.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swagger-api/swagger-ui.git",
+                "reference": "4be20654c612b09863e7952ad9a572583e55d0b7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/4be20654c612b09863e7952ad9a572583e55d0b7",
+                "reference": "4be20654c612b09863e7952ad9a572583e55d0b7",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Anna Bodnia",
+                    "email": "anna.bodnia@gmail.com"
+                },
+                {
+                    "name": "Buu Nguyen",
+                    "email": "buunguyen@gmail.com"
+                },
+                {
+                    "name": "Josh Ponelat",
+                    "email": "jponelat@gmail.com"
+                },
+                {
+                    "name": "Kyle Shockey",
+                    "email": "kyleshockey1@gmail.com"
+                },
+                {
+                    "name": "Robert Barnwell",
+                    "email": "robert@robertismy.name"
+                },
+                {
+                    "name": "Sahar Jafari",
+                    "email": "shr.jafari@gmail.com"
+                }
+            ],
+            "description": " Swagger UI is a collection of HTML, Javascript, and CSS assets that dynamically generate beautiful documentation from a Swagger-compliant API.",
+            "homepage": "http://swagger.io",
+            "keywords": [
+                "api",
+                "documentation",
+                "openapi",
+                "specification",
+                "swagger",
+                "ui"
+            ],
+            "support": {
+                "issues": "https://github.com/swagger-api/swagger-ui/issues",
+                "source": "https://github.com/swagger-api/swagger-ui/tree/v3.41.1"
+            },
+            "time": "2021-01-28T19:56:37+00:00"
         },
         {
             "name": "symfony/asset",

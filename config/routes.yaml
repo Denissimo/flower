@@ -15,3 +15,7 @@ basket.post:
   path: /basket
   controller: App\Controller\BasketController::add
   methods: [POST]
+
+_swagger-ui:
+  resource: '@HBSwaggerUiBundle/Resources/config/routing.yml'
+  prefix: /docs

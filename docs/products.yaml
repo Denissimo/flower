@@ -1,0 +1,2118 @@
+openapi: 3.0.0
+
+info:
+  title: RED | Products API
+  description: Products API of RED Marketplace
+  version: 1.0.0
+
+servers:
+  - url: http://product.red.localhost
+    description: Localhost server from develop
+  - url: https://red-product.berlin.devsmart.ru
+    description: Berlin test server
+  - url: https://red-product.seoul.devsmart.ru
+    description: Seoul test server
+  - url: https://red-product.cairo.devsmart.ru
+    description: Cairo test server
+  - url: https://red-product.ankara.devsmart.ru
+    description: Ankara test server
+  - url: https://red-product.riga.devsmart.ru
+    description: Riga test server
+
+tags:
+  - name: ОСАГО
+    description: Продукт ОСАГО
+  - name: КАСКО
+    description: Продукт КАСКО
+  - name: ИФЛ
+    description: Продукт ИФЛ (недвижимость)
+  - name: ВЗР
+    description: Продукт ВЗР (путешествия)
+
+paths:
+# osago
+  /product/osago/get-kbm:
+    post:
+      tags:
+        - ОСАГО
+      summary: Запрос КБМ
+      description: >
+        Метод возвращает КБМ одного или нескольких водителей
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                drivers:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Driver'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  kbm:
+                    type: number
+                    description: КБМ
+                    example: 0.8
+                  details:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        driver:
+                          $ref: '#/components/schemas/Driver'
+                        kbm:
+                          type: number
+                          description: КБМ
+                          example: 0.8
+        404:
+          $ref: '#/components/schemas/404'
+
+  /product/osago/make-request:
+    post:
+      tags:
+        - ОСАГО
+      summary: Запрос идентификатора на получение списка предложений по полному набору данных
+      description: >
+        Метод возвращает идентификатор запроса и список страховых компаний
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                car:
+                  $ref: '#/components/schemas/Car'
+                carDocument:
+                  $ref: '#/components/schemas/CarDocument'
+                policeStartDate:
+                  type: string
+                  format: date
+                owner:
+                  type: object
+                  properties:
+                    fio:
+                      $ref: '#/components/schemas/Fio'
+                    birthDate:
+                      type: string
+                      format: date
+                      example: '1990-01-01'
+                    address:
+                      $ref: '#/components/schemas/Address'
+                    passport:
+                      $ref: '#/components/schemas/Passport'
+                    phone:
+                      $ref: '#/components/schemas/Phone'
+                    email:
+                      $ref: '#/components/schemas/Email'
+                  required:
+                    - fio
+                    - birthDate
+                insurer:
+                  type: object
+                  properties:
+                    fio:
+                      $ref: '#/components/schemas/Fio'
+                    birthDate:
+                      type: string
+                      format: date
+                      example: '1990-01-01'
+                    address:
+                      $ref: '#/components/schemas/Address'
+                    passport:
+                      $ref: '#/components/schemas/Passport'
+                    phone:
+                      $ref: '#/components/schemas/Phone'
+                    email:
+                      $ref: '#/components/schemas/Email'
+                  required:
+                    - fio
+                    - birthDate
+                multiDrive:
+                  type: boolean
+                  example: false
+                clientIp:
+                  type: string
+                  description: IP адрес клиента
+                  example: 127.0.0.1
+                region:
+                  $ref: '#/components/schemas/Region'
+                drivers:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Driver'
+              required:
+                - car
+                - carDocument
+                - policeStartDate
+                - owner
+                - insurer
+                - multiDrive
+                - clientIp
+                - region
+                - drivers
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/Uuid'
+                  providers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                          description: Статус запроса
+                          example: processing
+                        name:
+                          type: string
+                          description: Название компании
+                          example: "Ренесанс"
+                        code:
+                          type: string
+                          description: Код компании
+                          example: "renins"
+                        description:
+                          type: string
+                          description: Описание компании
+                          example: "Описание компании Ренесанс"
+                        site_url:
+                          type: string
+                          description: Ссылка на сайт страховой компании
+                          example: https://renins.ru
+                        logo_url:
+                          type: string
+                          description: Ссылка на логотип
+                          example: http://brand.renins.ru/images/tild6236-6165-4137-b234-383537613130__renins-horizontal_lo.png
+                        price:
+                          type: number
+                          description: Стоимость
+                          example: 7000.00
+        404:
+          $ref: '#/components/schemas/404'
+
+  /product/osago/{provider}/get-offers:
+    parameters:
+      - name: provider
+        in: path
+        required: true
+        description: Код страховой компании (provider code)
+        schema:
+          type: string
+    post:
+      tags:
+        - ОСАГО
+      summary: Запрос предложений СК
+      description: >
+        Метод возвращает список предложений ОСАГО страховой компании
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uuid:
+                  $ref: '#/components/schemas/Uuid'
+              required:
+                - uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Статус запроса
+                    example: processing
+                  offers:
+                    type: array
+                    description: Предложения компании
+                    items:
+                      type: object
+                      properties:
+                        price:
+                          type: number
+                          description: Стоимость
+                          example: 7000.00
+                        providerCalculatedIdentifier:
+                          type: string
+                          description: Идентификатор рассчета в страховой компании
+                          example: 49321850923
+        404:
+          $ref: '#/components/schemas/404'
+
+  /product/osago/{provider}/order:
+    parameters:
+      - name: provider
+        in: path
+        required: true
+        description: Код страховой компании (provider code)
+        schema:
+          type: string
+    post:
+      tags:
+        - ОСАГО
+      summary: Создание заказа ОСАГО
+      description: >
+        Метод создает заказ ОСАГО и запускает сохранение заказа в страховой компании
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                makeRequestUuid:
+                  $ref: '#/components/schemas/Uuid'
+                offerUuid:
+                  $ref: '#/components/schemas/Uuid'
+                providerCalculatedIdentifier:
+                  type: string
+                  description: Идентификатор рассчета в страховой компании
+                  example: 49321850923
+                car:
+                  $ref: '#/components/schemas/Car'
+                carDocument:
+                  $ref: '#/components/schemas/CarDocument'
+                policeStartDate:
+                  type: string
+                  format: date
+                  example: '2020-11-15'
+                owner:
+                  $ref: '#/components/schemas/Owner'
+                insurer:
+                  $ref: '#/components/schemas/Insurer'
+                multiDrive:
+                  type: boolean
+                  example: false
+                clientIp:
+                  type: string
+                  description: IP адрес клиента
+                  example: 127.0.0.1
+                region:
+                  $ref: '#/components/schemas/Region'
+                drivers:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Driver'
+                acceptedCode:
+                  type: string
+                  example: '1234'
+              required:
+                - makeRequestUuid
+                - offerUuid
+                - providerCalculatedIdentifier
+                - car
+                - carDocument
+                - policeStartDate
+                - owner
+                - insurer
+                - multiDrive
+                - clientIp
+                - region
+                - drivers
+                - acceptedCode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/Uuid'
+        404:
+          $ref: '#/components/schemas/404'
+
+  /product/osago/get-order:
+    post:
+      tags:
+        - ОСАГО
+      summary: Получение заказа ОСАГО
+      description: >
+        Метод возвращает ранее созданный заказ ОСАГО
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderUuid:
+                  $ref: '#/components/schemas/Uuid'
+              required:
+                - orderUuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/Uuid'
+                  makeRequestUuid:
+                    $ref: '#/components/schemas/Uuid'
+                  providerCalculatedIdentifier:
+                    type: string
+                    description: Идентификатор рассчета в страховой компании
+                    example: 49321850923
+        404:
+          $ref: '#/components/schemas/404'
+
+# casco
+  /product/casco/make-request:
+    post:
+      tags:
+        - КАСКО
+      summary: Запрос идентификатора на получение списка предложений по полному набору данных
+      description: >
+        Метод возвращает идентификатор запроса и список страховых компаний
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                car:
+                  $ref: '#/components/schemas/Car'
+                carDocument:
+                  $ref: '#/components/schemas/CarDocument'
+                owner:
+                  $ref: '#/components/schemas/Owner'
+                insurer:
+                  $ref: '#/components/schemas/Insurer'
+                multiDrive:
+                  type: boolean
+                  example: true
+                mileage:
+                  type: string
+                  description: Пробег
+                  example: 100500
+                price:
+                  type: number
+                  description: Цена
+                  example: 750000
+                inCredit:
+                  type: boolean
+                  description: В кредите или нет
+                  example: true
+                bankOfCredit:
+                  type: string
+                  description: В каком банке кредит
+                  example: Альфабанк
+                hasInsuranceCases:
+                  type: boolean
+                  description: Наличие страховых случаев
+                  example: true
+                insuranceCompany:
+                  type: string
+                  description: Страховая компания
+                  example: Ренессанс
+                hasAntiTheftSystem:
+                  type: boolean
+                  description: Наличие спутниковой системы
+                  example: true
+                antiTheftSystem:
+                  type: string
+                  description: Спутниковая система
+                  example: ZTC-701M
+                hasAutostart:
+                  type: boolean
+                  description: Наличие автозапуска
+                  example: true
+                leastDriverExperience:
+                  type: number
+                  description: Наименьший стаж из водителей
+                  example: 5
+                leastDriverAge:
+                  type: number
+                  description: Наименьший возраст из водителей
+                  example: 25
+                clientIp:
+                  type: string
+                  description: IP адрес клиента
+                  example: 127.0.0.1
+                region:
+                  $ref: '#/components/schemas/Region'
+                drivers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      fio:
+                        $ref: '#/components/schemas/Fio'
+                      birthDate:
+                        type: string
+                        format: date
+                        description: Дата рождения
+                        example: '1990-01-01'
+                      married:
+                        type: boolean
+                        description: В браке
+                        example: true
+                      children:
+                        type: number
+                        description: Дети
+                        example: 2
+                      driverLicence:
+                        $ref: '#/components/schemas/DriverLicense'
+                      startExperienceDate:
+                        type: string
+                        format: date
+                        description: Дата начала стажа
+                        example: '2014-01-01'
+                      resident:
+                        type: boolean
+                    required:
+                      - fio
+                      - birthDate
+                      - married
+                      - children
+                      - driverLicence
+                      - startExperienceDate
+                      - resident
+              required:
+                - car
+                - carDocument
+                - owner
+                - insurer
+                - multiDrive
+                - mileage
+                - price
+                - inCredit
+                - hasInsuranceCases
+                - hasAntiTheftSystem
+                - hasAutostart
+                - leastDriverExperience
+                - leastDriverAge
+                - drivers
+                - clientIp
+                - region
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/Uuid'
+                  providers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                          description: Статус запроса
+                          example: processing
+                        name:
+                          type: string
+                          description: Название компании
+                          example: "Ренесанс"
+                        code:
+                          type: string
+                          description: Код компании
+                          example: "renins"
+                        description:
+                          type: string
+                          description: Описание компании
+                          example: "Описание компании Ренесанс"
+                        site_url:
+                          type: string
+                          description: Ссылка на сайт страховой компании
+                          example: https://renins.ru
+                        logo_url:
+                          type: string
+                          description: Ссылка на логотип
+                          example: http://brand.renins.ru/images/tild6236-6165-4137-b234-383537613130__renins-horizontal_lo.png
+
+        404:
+          $ref: '#/components/schemas/404'
+
+  /product/casco/{provider}/order:
+    parameters:
+      - name: provider
+        in: path
+        required: true
+        description: Код страховой компании (provider code)
+        schema:
+          type: string
+    post:
+      tags:
+        - КАСКО
+      summary: Создание заказа КАСКО
+      description: >
+          Метод создает заказ КАСКО и запускает сохранение заказа в страховой компании
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                makeRequestUuid:
+                  $ref: '#/components/schemas/Uuid'
+                offerUuid:
+                  $ref: '#/components/schemas/Uuid'
+                car:
+                  $ref: '#/components/schemas/Car'
+                carDocument:
+                  $ref: '#/components/schemas/CarDocument'
+                owner:
+                  $ref: '#/components/schemas/Owner'
+                insurer:
+                  $ref: '#/components/schemas/Insurer'
+                multiDrive:
+                  type: boolean
+                  example: true
+                mileage:
+                  type: string
+                  description: Пробег
+                  example: 100500
+                price:
+                  type: number
+                  description: Цена
+                  example: 750000
+                inCredit:
+                  type: boolean
+                  description: В кредите или нет
+                  example: true
+                bankOfCredit:
+                  type: string
+                  description: В каком банке кредит
+                  example: Альфабанк
+                hasInsuranceCases:
+                  type: boolean
+                  description: Наличие страховых случаев
+                  example: true
+                insuranceCompany:
+                  type: string
+                  description: Страховая компания
+                  example: Ренессанс
+                hasAntiTheftSystem:
+                  type: boolean
+                  description: Наличие спутниковой системы
+                  example: true
+                antiTheftSystem:
+                  type: string
+                  description: Спутниковая система
+                  example: ZTC-701M
+                hasAutostart:
+                  type: boolean
+                  description: Наличие автозапуска
+                  example: true
+                leastDriverExperience:
+                  type: number
+                  description: Наименьший стаж из водителей
+                  example: 5
+                leastDriverAge:
+                  type: number
+                  description: Наименьший возраст из водителей
+                  example: 25
+                clientIp:
+                  type: string
+                  description: IP адрес клиента
+                  example: 127.0.0.1
+                region:
+                  $ref: '#/components/schemas/Region'
+                drivers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      fio:
+                        $ref: '#/components/schemas/Fio'
+                      birthDate:
+                        type: string
+                        format: date
+                        description: Дата рождения
+                        example: '1990-01-01'
+                      married:
+                        type: boolean
+                        description: В браке
+                        example: true
+                      children:
+                        type: number
+                        description: Дети
+                        example: 2
+                      driverLicence:
+                        $ref: '#/components/schemas/DriverLicense'
+                      startExperienceDate:
+                        type: string
+                        format: date
+                        description: Дата начала стажа
+                        example: '2014-01-01'
+                      resident:
+                        type: boolean
+                    required:
+                      - fio
+                      - birthDate
+                      - married
+                      - children
+                      - driverLicence
+                      - startExperienceDate
+                      - resident
+              required:
+                - makeRequestUuid
+                - offerUuid
+                - car
+                - carDocument
+                - owner
+                - insurer
+                - multiDrive
+                - mileage
+                - price
+                - inCredit
+                - hasInsuranceCases
+                - hasAntiTheftSystem
+                - hasAutostart
+                - leastDriverExperience
+                - leastDriverAge
+                - drivers
+                - clientIp
+                - region
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderUuid:
+                    $ref: '#/components/schemas/Uuid'
+
+        404:
+          $ref: '#/components/schemas/404'
+
+  /product/casco/get-order:
+    post:
+      tags:
+        - КАСКО
+      summary: Получение заказа Каско
+      description: >
+        Метод возвращает ранее созданный заказ Каско
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderUuid:
+                  $ref: '#/components/schemas/Uuid'
+              required:
+                - orderUuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/Uuid'
+        404:
+          $ref: '#/components/schemas/404'
+
+  /product/casco/{provider}/get-offers:
+    parameters:
+      - name: provider
+        in: path
+        required: true
+        description: Код страховой компании (provider code)
+        schema:
+          type: string
+    post:
+      tags:
+        - КАСКО
+      summary: Запрос предложений СК
+      description: >
+        Метод возвращает список предложений КАСКО страховой компании
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                makeRequestUuid:
+                  $ref: '#/components/schemas/Uuid'
+              required:
+                - makeRequestUuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Статус запроса
+                    example: processing
+                  offers:
+                    type: array
+                    description: Предложения компании
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          description: Код
+                          example: LINK_IRIS_1
+                        name:
+                          type: string
+                          description: Название
+                          example: Полное покрытие
+                        price:
+                          type: number
+                          description: Стоимость
+                          example: 7000.00
+                        risks:
+                          type: array
+                          description: Риски
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                description: Наименование
+                                example: Ущерб
+                              code:
+                                type: string
+                                description: Код
+                                example: DAMAGE
+                              options:
+                                type: array
+                                description: Опции
+                                items:
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                      description: Наименование
+                                      example: Эвакуация
+                                    code:
+                                      type: string
+                                      description: Код
+                                      example: EVACUATION
+                                    price:
+                                      type: number
+                                      description: Стоимость
+                                      example: 7000.00
+        404:
+          $ref: '#/components/schemas/404'
+
+# property
+  /product/property/make-request:
+    post:
+      tags:
+        - ИФЛ
+      summary: Запрос идентификатора на получение списка предложений по полному набору данных
+      description: >
+        Метод возвращает идентификатор запроса и список страховых компаний с предложениями
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                region:
+                  $ref: '#/components/schemas/Region'
+                renovationAmount:
+                  type: number
+                  description: Стоимость ремонта
+                  example: 150000
+                movingPropertyAmount:
+                  type: number
+                  description: Стоимость движимого имущества
+                  example: 150000
+                civilResponsibilityAmount:
+                  type: number
+                  description: Сумма гражданской ответственности
+                  example: 150000
+                habitation:
+                  type: object
+                  properties:
+                    gas:
+                      type: boolean
+                      description: Дом газифицирован
+                      example: true
+                    woodenFloors:
+                      type: boolean
+                      description: Деревянные перекрытия
+                      example: false
+                    isFirstFloor:
+                      type: boolean
+                      description: Первый этаж
+                      example: false
+                    isLastFloor:
+                      type: boolean
+                      description: Последний этаж
+                      example: false
+                    isRent:
+                      type: boolean
+                      description: Сдается в аренду
+                      example: false
+                    isRepairPlanned:
+                      type: boolean
+                      description: Планируется реммонт
+                      example: false
+                    propertyType:
+                      type: string
+                      description: Тип недвижимости
+                      example: "flat"
+                    roomsCount:
+                      type: number
+                      description: Количество комнат
+                      example: 2
+                    builtYear:
+                      type: number
+                      description: Год постройки
+                      example: 2010
+                clientIp:
+                  type: string
+                  description: IP адрес клиента
+                  example: 127.0.0.1
+              required:
+                - region
+                - renovationAmount
+                - movingPropertyAmount
+                - civilResponsibilityAmount
+                - habitation
+                - clientIp
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/Uuid'
+                  providers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                          description: Статус запроса
+                          example: processing
+                        name:
+                          type: string
+                          description: Название компании
+                          example: "Ренесанс"
+                        code:
+                          type: string
+                          description: Код компании
+                          example: "renins"
+                        description:
+                          type: string
+                          description: Описание компании
+                          example: "Описание компании Ренесанс"
+                        site_url:
+                          type: string
+                          description: Ссылка на сайт страховой компании
+                          example: https://renins.ru
+                        logo_url:
+                          type: string
+                          description: Ссылка на логотип
+                          example: http://brand.renins.ru/images/tild6236-6165-4137-b234-383537613130__renins-horizontal_lo.png
+                        offers:
+                          type: array
+                          description: Предложения
+                          items:
+                            type: object
+                            properties:
+                              periodType:
+                                type: string
+                                enum:
+                                  - month
+                                  - year
+                                example: "year"
+                                description: Тип периода действия полиса (месяц/год )
+                              dateFrom:
+                                type: string
+                                format: date
+                                example: "2020-12-28"
+                                description: Дата начала действия полиса
+                              dateTo:
+                                type: string
+                                format: date
+                                example: "2021-12-27"
+                                description: Дата окончания действия полиса
+                              insuranceRenovationAmount:
+                                type: number
+                                description: Стоимость ремонта
+                                example: 150000
+                              insuranceMovingPropertyAmount:
+                                type: number
+                                description: Стоимость движимого имущества
+                                example: 150000
+                              insuranceCivilResponsibilityAmount:
+                                type: number
+                                description: Сумма гражданской ответственности
+                                example: 150000
+                              insuranceTotalAmount:
+                                type: number
+                                description: Страховая сумма
+                                example: 450000
+                              price:
+                                type: number
+                                description: Стоимость полиса
+                                example: 5000
+                              policyExampleLink:
+                                type: string
+                                description: Ссылка на пример полиса
+                              rulesLink:
+                                type: string
+                                description: Ссылка на правила страхования
+                              conditions:
+                                type: object
+                                description: Условия
+                                properties:
+                                  basic:
+                                    type: array
+                                    description: Базовые условия
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                          example: "Взрыв"
+                                        description:
+                                          type: string
+                                          example: "Освобождения большого количества энергии в ограниченном объеме"
+                                  additional:
+                                    type: array
+                                    description: Дополнительные условия
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                          example: "Кража с незаконным проникновением"
+                                        description:
+                                          type: string
+                                  excluded:
+                                    type: array
+                                    description: Исключенные условия
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                          example: "Авария инженерных систем"
+                                        description:
+                                          type: string
+                                          example: "Авария инженерных систем"
+
+        404:
+          $ref: '#/components/schemas/404'
+
+  /product/property/{provider}/order:
+    parameters:
+      - name: provider
+        in: path
+        required: true
+        description: Код страховой компании (provider code)
+        schema:
+          type: string
+    post:
+      tags:
+        - ИФЛ
+      summary: Создание заказа ИФЛ
+      description: >
+        Метод создает заказ ИФЛ и запускает сохранение заказа в страховой компании
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                makeRequestUuid:
+                  $ref: '#/components/schemas/Uuid'
+                offerUuid:
+                  $ref: '#/components/schemas/Uuid'
+                apartment:
+                  $ref: '#/components/schemas/Apartment'
+                insurer:
+                  $ref: '#/components/schemas/Insurer'
+                dateFrom:
+                  type: string
+                  format: date
+                  example: "2020-12-28"
+                  description: Дата начала действия полиса
+                agreeWithRules:
+                  type: boolean
+                  example: true
+                  description: Согласие с правилами
+              required:
+                - makeRequestUuid
+                - offerUuid
+                - apartment
+                - insurer
+                - dateFrom
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderUuid:
+                    $ref: '#/components/schemas/Uuid'
+
+        404:
+          $ref: '#/components/schemas/404'
+
+# vzr
+  /product/vzr/pre-make-request:
+    post:
+      tags:
+        - ВЗР
+      summary: Запрос идентификатора на получение списка предложений по минимальному набору данных
+      description: >
+        Метод возвращает идентификатор запроса и список страховых компаний с предложениями
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                destinations:
+                  type: array
+                  description: Направления
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: ID страны
+                        example: 1
+                      name:
+                        type: string
+                        description: Название страны
+                        example: Россия
+                    required:
+                      - id
+                      - name
+                isDestinationGroup:
+                  type: boolean
+                  example: false
+                  description: Один полис на все страны
+                dateFrom:
+                  type: string
+                  format: date
+                  example: "2020-12-28"
+                  description: Дата от
+                dateTo:
+                  type: string
+                  format: date
+                  example: "2021-12-27"
+                  description: Дата до
+                alreadyTraveling:
+                  type: boolean
+                  example: false
+                  description: Уже путешествую
+                onYear:
+                  type: boolean
+                  example: false
+                  description: Годовой полис
+                tourists:
+                  type: array
+                  description: Туристы
+                  items:
+                    type: object
+                    properties:
+                      age:
+                        type: number
+                        description: "Возраст туриста"
+                        example: 30
+                    required:
+                      - age
+                clientIp:
+                  type: string
+                  description: IP адрес клиента
+                  example: 127.0.0.1
+              required:
+                - destinations
+                - isDestinationGroup
+                - dateFrom
+                - dateTo
+                - alreadyTraveling
+                - onYear
+                - tourists
+                - clientIp
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/Uuid'
+                  providers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                          description: Статус запроса
+                          example: processing
+                        name:
+                          type: string
+                          description: Название компании
+                          example: "Ренесанс"
+                        code:
+                          type: string
+                          description: Код компании
+                          example: "renins"
+                        description:
+                          type: string
+                          description: Описание компании
+                          example: "Описание компании Ренесанс"
+                        site_url:
+                          type: string
+                          description: Ссылка на сайт страховой компании
+                          example: https://renins.ru
+                        logo_url:
+                          type: string
+                          description: Ссылка на логотип
+                          example: http://brand.renins.ru/images/tild6236-6165-4137-b234-383537613130__renins-horizontal_lo.png
+                        offers:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              dateFrom:
+                                type: string
+                                format: date
+                                example: "2020-12-28"
+                                description: Дата начала действия полиса
+                              dateTo:
+                                type: string
+                                format: date
+                                example: "2021-12-27"
+                                description: Дата окончания действия полиса
+                              assistance:
+                                type: string
+                                description: Ассистанс
+                                example: "Europ Assistance"
+                              franchiseAmount:
+                                type: number
+                                description: Сумма франшизы
+                                example: 50
+                              price:
+                                type: number
+                                description: Стоимость полиса
+                                example: 5000
+                              policyExampleLink:
+                                type: string
+                                description: Ссылка на пример полиса
+                              rulesLink:
+                                type: string
+                                description: Ссылка на правила страхования
+                              conditions:
+                                type: object
+                                description: Условия
+                                properties:
+                                  basic:
+                                    type: array
+                                    description: Базовые условия
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                          example: "Амбулаторное лечение"
+                                        description:
+                                          type: string
+                                  additional:
+                                    type: array
+                                    description: Дополнительные условия
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                          example: "Эвакуация детей"
+                                        description:
+                                          type: string
+                                  excluded:
+                                    type: array
+                                    description: Исключенные условия
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                          example: "Госпитализация"
+                                        description:
+                                          type: string
+
+        404:
+          $ref: '#/components/schemas/404'
+
+  /product/vzr/make-request:
+    post:
+      tags:
+        - ВЗР
+      summary: Запрос идентификатора на получение списка предложений по полному набору данных
+      description: >
+        Метод возвращает идентификатор запроса и список страховых компаний с предложениями
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                destinations:
+                  type: array
+                  description: Направления
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: ID страны
+                        example: 1
+                      name:
+                        type: string
+                        description: Название страны
+                        example: Россия
+                    required:
+                      - id
+                      - name
+                isDestinationGroup:
+                  type: boolean
+                  example: false
+                  description: Один полис на все страны
+                dateFrom:
+                  type: string
+                  format: date
+                  example: "2020-12-28"
+                  description: Дата от
+                dateTo:
+                  type: string
+                  format: date
+                  example: "2021-12-27"
+                  description: Дата до
+                alreadyTraveling:
+                  type: boolean
+                  example: false
+                  description: Уже путешествую
+                onYear:
+                  type: boolean
+                  example: false
+                  description: Годовой полис
+                countDaysOfYear:
+                  type: number
+                  enum:
+                    - 15
+                    - 30
+                    - 45
+                    - 60
+                    - 180
+                    - 365
+                  example: 90
+                  description: Сколько дней в году путешествует
+                options:
+                  type: array
+                  description: Опции полиса
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        description: "ID опции в red"
+                        example: 1
+                      name:
+                        type: string
+                        description: "Название опции в red"
+                        example: Альпинизм
+                      insuranceAmount:
+                        type: number
+                        example: 40000
+                        description: Страховая сумма
+                    required:
+                      - id
+                      - name
+                tourists:
+                  type: array
+                  description: Туристы
+                  items:
+                    type: object
+                    properties:
+                      fio:
+                        $ref: '#/components/schemas/Fio'
+                      age:
+                        type: number
+                        description: "Возраст туриста"
+                        example: 30
+                      sex:
+                        $ref: '#/components/schemas/Sex'
+                      internationalPassport:
+                        type: object
+                        properties:
+                          series:
+                            type: number
+                            description: "Серия"
+                            example: 12
+                          number:
+                            type: number
+                            description: "Номер"
+                            example: 1234567
+                        required:
+                          - series
+                          - number
+                    required:
+                      - fio
+                      - age
+                      - sex
+                      - internationalPassport
+                clientIp:
+                  type: string
+                  description: IP адрес клиента
+                  example: 127.0.0.1
+              required:
+                - destinations
+                - isDestinationGroup
+                - dateFrom
+                - dateTo
+                - alreadyTraveling
+                - onYear
+                - tourists
+                - clientIp
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/Uuid'
+                  providers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                          description: Статус запроса
+                          example: processing
+                        name:
+                          type: string
+                          description: Название компании
+                          example: "Ренесанс"
+                        code:
+                          type: string
+                          description: Код компании
+                          example: "renins"
+                        description:
+                          type: string
+                          description: Описание компании
+                          example: "Описание компании Ренесанс"
+                        site_url:
+                          type: string
+                          description: Ссылка на сайт страховой компании
+                          example: https://renins.ru
+                        logo_url:
+                          type: string
+                          description: Ссылка на логотип
+                          example: http://brand.renins.ru/images/tild6236-6165-4137-b234-383537613130__renins-horizontal_lo.png
+                        offers:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              dateFrom:
+                                type: string
+                                format: date
+                                example: "2020-12-28"
+                                description: Дата начала действия полиса
+                              dateTo:
+                                type: string
+                                format: date
+                                example: "2021-12-27"
+                                description: Дата окончания действия полиса
+                              assistance:
+                                type: string
+                                description: Ассистанс
+                                example: "Europ Assistance"
+                              franchiseAmount:
+                                type: number
+                                description: Сумма франшизы
+                                example: 50
+                              price:
+                                type: number
+                                description: Стоимость полиса
+                                example: 5000
+                              policyExampleLink:
+                                type: string
+                                description: Ссылка на пример полиса
+                              rulesLink:
+                                type: string
+                                description: Ссылка на правила страхования
+                              conditions:
+                                type: object
+                                description: Условия
+                                properties:
+                                  basic:
+                                    type: array
+                                    description: Базовые условия
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                          example: "Амбулаторное лечение"
+                                        description:
+                                          type: string
+                                  additional:
+                                    type: array
+                                    description: Дополнительные условия
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                          example: "Эвакуация детей"
+                                        description:
+                                          type: string
+                                  excluded:
+                                    type: array
+                                    description: Исключенные условия
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                          example: "Госпитализация"
+                                        description:
+                                          type: string
+
+        404:
+          $ref: '#/components/schemas/404'
+
+  /product/vzr/{provider}/order:
+    parameters:
+      - name: provider
+        in: path
+        required: true
+        description: Код страховой компании (provider code)
+        schema:
+          type: string
+    post:
+      tags:
+        - ВЗР
+      summary: Создание заказа ВЗР
+      description: >
+        Метод создает заказ ВЗР и запускает сохранение заказа в страховой компании
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                makeRequestUuid:
+                  $ref: '#/components/schemas/Uuid'
+                offerUuid:
+                  $ref: '#/components/schemas/Uuid'
+                destination:
+                  type: object
+                  description: Направление
+                  properties:
+                    id:
+                      type: integer
+                      description: ID страны
+                      example: 1
+                    name:
+                      type: string
+                      description: Название страны
+                      example: Россия
+                  required:
+                    - id
+                    - name
+                isDestinationGroup:
+                  type: boolean
+                  example: false
+                  description: Один полис на все страны
+                dateFrom:
+                  type: string
+                  format: date
+                  example: "2020-12-28"
+                  description: Дата от
+                dateTo:
+                  type: string
+                  format: date
+                  example: "2021-12-27"
+                  description: Дата до
+                alreadyTraveling:
+                  type: boolean
+                  example: false
+                  description: Уже путешествую
+                onYear:
+                  type: boolean
+                  example: false
+                  description: Годовой полис
+                countDaysOfYear:
+                  type: number
+                  enum:
+                    - 15
+                    - 30
+                    - 45
+                    - 60
+                    - 180
+                    - 365
+                  example: 90
+                  description: Сколько дней в году путешествует
+                options:
+                  type: array
+                  description: Опции полиса
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        description: "ID опции в red"
+                        example: 1
+                      name:
+                        type: string
+                        description: "Название опции в red"
+                        example: Альпинизм
+                      insuranceAmount:
+                        type: number
+                        example: 40000
+                        description: Страховая сумма
+                    required:
+                      - id
+                      - name
+                tourists:
+                  type: array
+                  description: Туристы
+                  items:
+                    type: object
+                    properties:
+                      fio:
+                        $ref: '#/components/schemas/Fio'
+                      age:
+                        type: number
+                        description: "Возраст туриста"
+                        example: 30
+                      sex:
+                        $ref: '#/components/schemas/Sex'
+                      internationalPassport:
+                        type: object
+                        properties:
+                          series:
+                            type: number
+                            description: "Серия"
+                            example: 12
+                          number:
+                            type: number
+                            description: "Номер"
+                            example: 1234567
+                        required:
+                          - series
+                          - number
+                    required:
+                      - fio
+                      - age
+                      - sex
+                      - internationalPassport
+                insurer:
+                  type: object
+                  properties:
+                    fio:
+                      $ref: '#/components/schemas/Fio'
+                    sex:
+                      $ref: '#/components/schemas/Sex'
+                    birthDate:
+                      type: string
+                      format: date
+                      description: Дата рождения
+                      example: '1990-01-01'
+                    phone:
+                      $ref: '#/components/schemas/Phone'
+                    email:
+                      $ref: '#/components/schemas/Email'
+                  required:
+                    - fio
+                    - sex
+                    - birthDate
+                    - phone
+                    - email
+                clientIp:
+                  type: string
+                  description: IP адрес клиента
+                  example: 127.0.0.1
+              required:
+                - destination
+                - isDestinationGroup
+                - dateFrom
+                - dateTo
+                - alreadyTraveling
+                - onYear
+                - tourists
+                - clientIp
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderUuid:
+                    $ref: '#/components/schemas/Uuid'
+
+        404:
+          $ref: '#/components/schemas/404'
+
+components:
+  parameters:
+    brand:
+      in: path
+      name: brand
+      required: true
+      schema:
+        type: integer
+      description: Brand ID
+
+  schemas:
+    Phone:
+      type: string
+      pattern: '^+7\d{10}$'
+      example: "79251231212"
+    Email:
+      type: string
+      format: email
+      example: "client@mail.ru"
+    Sex:
+      type: string
+      description: "Пол"
+      enum:
+        - "male"
+        - "female"
+      example: "male"
+    Uuid:
+      type: string
+      format: uuid
+      example: "70fc5563-65f8-476a-b8e9-00099979e93c"
+    Fio:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: Имя
+          example: Иван
+        lastName:
+          type: string
+          description: Фамилия
+          example: Иванов
+        middleName:
+          type: string
+          description: Отчество
+          example: Иванович
+      required:
+        - firstName
+        - lastName
+        - middleName
+    Region:
+      type: object
+      properties:
+        regionName:
+          type: string
+          description: Название региона
+          example: Москва
+        regionKladrCode:
+          type: string
+          description: Код КЛАДР региона
+          example: '7700000000015450062'
+        regionFiasCode:
+          type: string
+          description: Код ФИАС региона
+          example: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5'
+      required:
+        - regionName
+        - regionKladrCode
+        - regionFiasCode
+    Car:
+      type: object
+      properties:
+        vinNumber:
+          type: string
+          description: Vin
+          example: Z94CB41AAGR323020
+        gosNumber:
+          type: string
+          description: Гос. номер
+          example: М289АС750
+        bodyNumber:
+          type: string
+          description: Номер кузова
+          example: CF51300791
+        chassisNumber:
+          type: string
+          description: Номер шасси
+          example: '323020'
+        techData:
+          $ref: '#/components/schemas/TechDataDTO'
+      required:
+        - techData
+        - vinNumber
+        - gosNumber
+    TechDataDTO:
+      type: object
+      properties:
+        brand:
+          type: string
+          description: Бренд
+          example: Honda
+        model:
+          type: string
+          description: Модель
+          example: Accord
+        logo:
+          type: string
+          description: Лого
+          example: 'https://vl.imgix.net/img/kia-logo.png'
+        fullName:
+          type: string
+          description: Полное название
+          example: Honda Accord
+        type:
+          type: string
+          description: Тип
+          example: Седан
+        bodyColor:
+          type: string
+          description: Цвет код
+          example: 11
+        bodyColorName:
+          type: string
+          description: Цвет
+          example: Темно-Серый
+        year:
+          type: string
+          description: Год
+          example: 2014
+        engineFuel:
+          type: string
+          description: Топливо
+          example: Бензиновый
+        engineNumber:
+          type: string
+          description: Номер двигателя
+          example: FW471898
+        engineModel:
+          type: string
+          description: Модель двигателя
+          example: G4FA
+        engineVolume:
+          type: string
+          description: Обьем двигателя
+          example: 1396
+        enginePowerHp:
+          type: string
+          description: Мошность двигателя
+          example: 180
+        enginePowerKw:
+          type: string
+          description: Мошность Ватт
+          example: 79
+        weightNetto:
+          type: string
+          description: Масса
+          example: 1160
+        weightMax:
+          type: string
+          description: МАкс. масса
+          example: 1565
+        drive:
+          type: string
+          description: Привод
+          example: Заднеприводной
+        wheel:
+          type: string
+          description: Руль
+          example: LEFT
+      required:
+        - brand
+        - model
+        - type
+        - year
+        - enginePower
+        - enginePowerHp
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Идентификатор. Uuid v4
+        fio:
+          $ref: '#/components/schemas/Fio'
+    CarDocument:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Тип документа
+          enum:
+            - sts
+            - pts
+          example: sts
+        series:
+          type: string
+          description: Серия
+          example: '1234'
+        number:
+          type: string
+          description: Номер
+          example: '123456'
+        issuedDate:
+          type: string
+          format: date
+          description: Дата выдачи
+          example: '2012-01-01'
+      required:
+        - type
+        - series
+        - number
+        - issuedDate
+    DiagnosticCard:
+      description: Диагностическая карта (ТО)
+      type: object
+      properties:
+        number:
+          type: string
+        stopDiagnosticDate:
+          type: string
+          format: date
+      required:
+        - number
+        - stopDiagnosticDate
+    Driver:
+      description: Водитель
+      type: object
+      properties:
+        fio:
+          $ref: '#/components/schemas/Fio'
+        birthDate:
+          type: string
+          format: date
+          description: Дата рождения
+          example: '1990-01-01'
+        driverLicence:
+          $ref: '#/components/schemas/DriverLicense'
+        startExperienceDate:
+          type: string
+          format: date
+          description: Дата начала стажа
+          example: '2014-01-01'
+        sex:
+          $ref: '#/components/schemas/Sex'
+        resident:
+          type: boolean
+      required:
+        - fio
+        - birthDate
+        - driverLicence
+        - startExperienceDate
+        - sex
+        - resident
+    DriverLicense:
+      description: Водительское удостоверение
+      type: object
+      properties:
+        series:
+          type: string
+          description: Серия
+          example: 1234
+        number:
+          type: string
+          description: Номер
+          example: 123456
+        issuedDate:
+          type: string
+          description: Дата выдачи ВУ
+          format: date
+          example: '2014-01-01'
+      required:
+        - series
+        - number
+        - issuedDate
+    Owner:
+      description: Владелец
+      type: object
+      properties:
+        fio:
+          $ref: '#/components/schemas/Fio'
+        birthDate:
+          type: string
+          format: date
+          example: '1990-01-01'
+        address:
+          $ref: '#/components/schemas/Address'
+        passport:
+          $ref: '#/components/schemas/Passport'
+        phone:
+          $ref: '#/components/schemas/Phone'
+        email:
+          $ref: '#/components/schemas/Email'
+      required:
+        - fio
+        - birthDate
+        - address
+        - passport
+        - phone
+        - email
+    Insurer:
+      description: Страхователь
+      type: object
+      properties:
+        fio:
+          $ref: '#/components/schemas/Fio'
+        birthDate:
+          type: string
+          format: date
+          example: '1990-01-01'
+        address:
+          $ref: '#/components/schemas/Address'
+        passport:
+          $ref: '#/components/schemas/Passport'
+        phone:
+          $ref: '#/components/schemas/Phone'
+        email:
+          $ref: '#/components/schemas/Email'
+      required:
+        - fio
+        - birthDate
+        - address
+        - passport
+        - phone
+        - email
+    Passport:
+      description: Паспорт
+      type: object
+      properties:
+        fio:
+          $ref: '#/components/schemas/Fio'
+        series:
+          type: string
+          example: '1234'
+        number:
+          type: string
+          example: '123456'
+        issuedBy:
+          type: string
+          example: 'ОВД Можайского района'
+        issuedDate:
+          type: string
+          format: date
+          example: '2010-01-01'
+        departmentCode:
+          type: string
+          example: '340-333'
+      required:
+        - fio
+        - series
+        - number
+        - issuedBy
+        - issuedDate
+        - departmentCode
+    Address:
+      description: Адрес
+      type: object
+      properties:
+        country:
+          type: string
+          example: 'Россия'
+        region:
+          type: string
+          example: 'г Москва'
+        city:
+          type: string
+          example: 'Москва'
+        street:
+          type: string
+          example: 'Академика Королева'
+        house:
+          type: string
+          example: '3'
+        zipCode:
+          type: string
+          example: '129515'
+        kladrId:
+          type: string
+          example: '7700000000015450062'
+        fiasId:
+          type: string
+          example: 'f64c75cd-a640-41ed-9893-c1aaef58e638'
+        streetFiasId:
+          type: string
+          example: '74779e0c-263e-45a0-b5dc-36ef11f45dba'
+        settlementFiasId:
+          type: string
+          example: 'f64c75cd-a640-41ed-9893-c1aaef58e638'
+        regionFiasId:
+          type: string
+          example: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5'
+      required:
+        - country
+        - region
+    Apartment:
+      description: Квартира
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+        area:
+          type: number
+          example: 45
+          description: Площадь квартиры (кв/м)
+        builtYear:
+          type: number
+          example: 2010
+          description: Год постройки
+        roomsCount:
+          type: number
+          example: 2
+          description: Количество комнат
+      required:
+        - address
+        - area
+        - builtYear
+        - roomsCount
+    404:
+      description: Not found response
+      type: string
+      example: Not found

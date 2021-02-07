@@ -5,12 +5,14 @@
         "php": ">=7.1.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "composer/package-versions-deprecated": "1.11.99.1",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.8",
         "gedmo/doctrine-extensions": "^3.0",
+        "harmbandstra/swagger-ui-bundle": "^4.4",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^5.1",
         "sonata-project/admin-bundle": "^3.87",
@@ -39,8 +41,7 @@
         "symfony/yaml": "4.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
-        "vich/uploader-bundle": "^1.16",
-      "ext-json": "*"
+        "vich/uploader-bundle": "^1.16"
     },
     "require-dev": {
         "symfony/browser-kit": "^4.4",
@@ -85,9 +86,11 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
+            "HarmBandstra\\SwaggerUiBundle\\Composer\\ScriptHandler::linkAssets",
             "@auto-scripts"
         ],
         "post-update-cmd": [
+            "HarmBandstra\\SwaggerUiBundle\\Composer\\ScriptHandler::linkAssets",
             "@auto-scripts"
         ]
     },

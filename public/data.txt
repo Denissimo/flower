@@ -1,0 +1,35 @@
+Den@Den-PC MINGW64 /e/OpenServer/domains/flower (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   config/packages/hb_swagger_ui.yaml
+        new file:   docs/file/flowers.yaml
+        new file:   docs/flowers.yaml
+        new file:   public/docs/flowers.yaml
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   composer.json
+        modified:   composer.lock
+        modified:   config/bundles.php
+        modified:   config/packages/hb_swagger_ui.yaml
+        modified:   config/routes.yaml
+        modified:   symfony.lock
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        docs/products.yaml
+        public/docs/.gitkeep
+        public/docs/.htaccess
+        public/docs/favicon-16x16.png
+        public/docs/favicon-32x32.png
+        public/docs/index.html
+        public/docs/oauth2-redirect.html
+        public/docs/swagger-ui-bundle.js
+        public/docs/swagger-ui-es-bundle-core.js
+        public/docs/swagger-ui-es-bundle.js
+        public/docs/swagger-ui-standalone-preset.js
+        public/docs/swagger-ui.css
+        public/docs/swagger-ui.js
