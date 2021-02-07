@@ -2,3 +2,5 @@ hb_swagger_ui:
     directory: "%kernel.root_dir%/../docs/"
     files:
         - "flowers.yaml"
+        - "swagger.json"
+        - "products.yaml"

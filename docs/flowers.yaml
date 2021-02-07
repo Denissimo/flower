@@ -1,8 +1,8 @@
 openapi: 3.0.0
 
 info:
-  title: Flowers
-  description: Flowers api
+  title: Flowers API
+  description: Products API of Flowers
   version: 1.0.0
 
 servers:
@@ -10,21 +10,15 @@ servers:
     description: Localhost server from develop
 
 tags:
-  - name: ОСАГО
+  - name: Bouquets
     description: Продукт ОСАГО
-  - name: КАСКО
-    description: Продукт КАСКО
-  - name: ИФЛ
-    description: Продукт ИФЛ (недвижимость)
-  - name: ВЗР
-    description: Продукт ВЗР (путешествия)
 
 paths:
-# osago
-  /basket:
+  # osago
+  /product/osago/get-kbm:
     post:
       tags:
-        - ОСАГО
+        - Bouquets
       summary: Запрос КБМ
       description: >
         Метод возвращает КБМ одного или нескольких водителей
@@ -33,11 +27,13 @@ paths:
           application/json:
             schema:
               type: object
-                properties:
-                  status:
-                    type: string
-                    description: Статус запроса
-                    example: processing
+              properties:
+                drivers:
+                  type: array
+                  items:
+                    type: number
+                    description: КБМ
+                    example: 0.8
       responses:
         200:
           description: OK
@@ -59,4 +55,13 @@ paths:
                           type: number
                           description: КБМ
                           example: 0.8
+        404:
+          $ref: '#/components/schemas/404'
 
+
+components:
+  schemas:
+    404:
+      description: Not found response
+      type: string
+      example: Not found
