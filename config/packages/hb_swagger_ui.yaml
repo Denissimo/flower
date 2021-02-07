@@ -1,4 +1,4 @@
 hb_swagger_ui:
-    directory: "%kernel.root_dir%/../public/docs/"
+    directory: "%kernel.root_dir%/../docs/"
     files:
         - "flowers.yaml"
