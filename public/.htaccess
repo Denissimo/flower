@@ -4,7 +4,10 @@ RewriteBase /
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(?!asdf\/).*$ index.php [L]
 
-RewriteRule .* index.php [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(asdf\/).*$ test.php [L]
 
 

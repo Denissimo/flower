@@ -1,4 +1,5 @@
 hb_swagger_ui:
+    assetUrlPath: "/public/bundles/hbswaggerui/"
     directory: "%kernel.root_dir%/../docs/"
     files:
         - "flowers.yaml"
