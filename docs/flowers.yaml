@@ -34,17 +34,7 @@ paths:
           required: true
           type: "integer"
         - name: "flowerName"
-          in: "form-data"
-          description: "Name flower"
-          required: true
-          type: "string"
-        - name: "flowerBody"
-          in: "body"
-          description: "Name flower"
-          required: true
-          type: "string"
-        - name: "test"
-          in: "query"
+          in: "formData"
           description: "Name flower"
           required: true
           type: "string"
