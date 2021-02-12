@@ -5,3 +5,4 @@ hb_swagger_ui:
         - "flowers.yaml"
         - "swagger.json"
         - "products.yaml"
+        - "swagger.yaml"

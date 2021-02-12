@@ -10,6 +10,7 @@ class BasketController extends AbstractController
 {
     public function add(Request $request): Response
     {
+        $p = $_POST;
         $number = random_int(0, 100);
         $all = $request->request->all();
         $a = json_encode([1]);
