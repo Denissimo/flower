@@ -1,0 +1,63 @@
+body {
+    background:url("/../images/background/grass1.jpg") repeat;
+}
+
+.logo{
+    height: 110px;
+    margin: -45px 0 0 0;
+}
+/*background-image: linear-gradient(#ffAAEE, #f670b9 60%, #f860b0);*/
+/*background: linear-gradient(to bottom, #FEF0Fc, #de107c, #800000);*/
+.navbar-custom{
+    background: linear-gradient(#ffAAEE, #f670b9 60%, #f860b0);
+}
+
+.navbar-brand{
+    max-height: 40px;
+}
+
+.footer{
+    background: linear-gradient(#ffAAEE, #f670b9 60%, #f860b0);
+    height: 30px;
+    padding: 2px 0 0 8px;
+}
+
+.shad1{
+    -webkit-box-shadow: 6px 6px 13px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    6px 6px 13px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         6px 6px 13px 0px rgba(50, 50, 50, 0.75);
+}
+
+.shad2{
+    -webkit-box-shadow: 0px 0px 2px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 2px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 2px 0px rgba(50, 50, 50, 0.75);
+}
+
+.tshad1{
+    text-shadow: 2px 2px 3px rgba(30, 30, 30, 1);
+}
+
+.bcrumb{
+    margin-bottom: -15px;
+    margin-top: 5px;
+}
+
+.carousel-item img{
+    width: 1200px;
+}
+
+.carousel-caption p{
+    /*color: #ff0000;*/
+}
+
+.list-group-item:hover{
+    background: #FFFF80;
+}
+
+.flower-small{
+    width: 16rem;
+    height: 16rem;
+    border-radius: 10px;
+    border: #FFFFFF 3px solid;
+}

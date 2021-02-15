@@ -1,0 +1,40 @@
+.h10 {
+    height: 10px;
+}
+
+
+.mart10 {
+    margin-top: 10px;
+}
+
+.marb10 {
+    margin-bottom: 10px;
+}
+
+.marb20 {
+    margin-bottom: 20px;
+}
+
+.mart20 {
+    margin-top: 20px;
+}
+
+.mart30 {
+    margin-top: 30px;
+}
+
+.mart140 {
+    margin-top: 40px;
+}
+
+.mart50 {
+    margin-top: 50px;
+}
+
+.padb10{
+    padding-bottom: 10px;
+}
+
+.br15{
+    border-radius: 15px;
+}
