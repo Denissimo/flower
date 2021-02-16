@@ -21,6 +21,16 @@ petId.post:
   controller: App\Controller\BasketController::add
   methods: [POST]
 
+flowerCategoryId:
+  path: /editCategory/{categoryId}
+  controller: App\Controller\FlowerCategoryController::edit
+  methods: [GET, POST]
+
+flowerCategorySave:
+  path: /saveCategory
+  controller: App\Controller\FlowerCategoryController::save
+  methods: [POST]
+
 _swagger-ui:
   resource: '@HBSwaggerUiBundle/Resources/config/routing.yml'
   prefix: /docs

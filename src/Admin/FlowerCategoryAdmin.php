@@ -19,6 +19,10 @@ final class FlowerCategoryAdmin extends AbstractAdmin
             ->add('leastQty')
             ->add('leastSum')
             ->add('sortIndex')
+            ->add('title')
+            ->add('keywords')
+            ->add('description')
+            ->add('h1')
         ;
     }
 
@@ -27,7 +31,12 @@ final class FlowerCategoryAdmin extends AbstractAdmin
         $datagridMapper->add('nameRus')
 //            ->add('nameEng')
             ->add('leastQty')
-            ->add('leastSum');
+            ->add('leastSum')
+            ->add('title')
+            ->add('keywords')
+            ->add('description')
+            ->add('h1')
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -40,6 +49,10 @@ final class FlowerCategoryAdmin extends AbstractAdmin
             ->add('leastQty')
             ->add('leastSum')
             ->add('sortIndex')
+            ->add('title')
+            ->add('keywords')
+            ->add('description')
+            ->add('h1')
         ;
     }
 }

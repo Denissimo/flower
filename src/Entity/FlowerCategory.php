@@ -59,6 +59,26 @@ class FlowerCategory
      */
     private $sortIndex;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $keywords;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $h1;
+
     public function __construct()
     {
         $this->flowerBouquets = new ArrayCollection();
@@ -189,5 +209,53 @@ class FlowerCategory
     public function __toString()
     {
         return $this->getNameRus();
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getKeywords(): ?string
+    {
+        return $this->keywords;
+    }
+
+    public function setKeywords(?string $keywords): self
+    {
+        $this->keywords = $keywords;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getH1(): ?string
+    {
+        return $this->h1;
+    }
+
+    public function setH1(?string $h1): self
+    {
+        $this->h1 = $h1;
+
+        return $this;
     }
 }
