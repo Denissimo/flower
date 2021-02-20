@@ -19,5 +19,6 @@ return [
     Sonata\BlockBundle\SonataBlockBundle::class => ['all' => true],
     Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
     Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle::class => ['all' => true],
-    HarmBandstra\SwaggerUiBundle\HBSwaggerUiBundle::class => ['all' => true]
+    HarmBandstra\SwaggerUiBundle\HBSwaggerUiBundle::class => ['all' => true],
+    FOS\UserBundle\FOSUserBundle::class => ['all' => true],
 ];
