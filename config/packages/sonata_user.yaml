@@ -1,0 +1,6 @@
+# config/packages/sonata_admin.yaml
+
+sonata_user:
+    class:
+        user: App\Entity\User
+        group: App\Entity\UserGroup

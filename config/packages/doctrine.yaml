@@ -22,6 +22,8 @@ doctrine:
 #                connection: default
 #                auto_mapping: true
 #                mappings:
+#                    SonataUserBundle: ~
+#                    FOSUserBundle: ~
 #                    App:
 #                        is_bundle: false
 #                        type: yml
@@ -38,6 +40,8 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+            SonataUserBundle: ~
+            FOSUserBundle: ~
 #            translatable:
 #                type: annotation
 #                alias: Gedmo

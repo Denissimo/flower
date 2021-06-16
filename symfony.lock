@@ -29,6 +29,9 @@
     "doctrine/dbal": {
         "version": "2.12.1"
     },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
     "doctrine/doctrine-bundle": {
         "version": "2.0",
         "recipe": {
@@ -177,11 +180,17 @@
     "sonata-project/cache": {
         "version": "2.1.0"
     },
+    "sonata-project/datagrid-bundle": {
+        "version": "3.3.0"
+    },
     "sonata-project/doctrine-extensions": {
         "version": "1.11.0"
     },
     "sonata-project/doctrine-orm-admin-bundle": {
         "version": "3.27.0"
+    },
+    "sonata-project/easy-extends-bundle": {
+        "version": "2.5.0"
     },
     "sonata-project/exporter": {
         "version": "2.5.0"
@@ -197,6 +206,9 @@
     },
     "sonata-project/twig-extensions": {
         "version": "1.5.0"
+    },
+    "sonata-project/user-bundle": {
+        "version": "4.11.1"
     },
     "swagger-api/swagger-ui": {
         "version": "v3.41.1"
@@ -423,6 +435,9 @@
     },
     "symfony/polyfill-php80": {
         "version": "v1.22.0"
+    },
+    "symfony/polyfill-php81": {
+        "version": "v1.23.0"
     },
     "symfony/process": {
         "version": "v4.4.18"

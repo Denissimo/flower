@@ -34,3 +34,11 @@ flowerCategorySave:
 _swagger-ui:
   resource: '@HBSwaggerUiBundle/Resources/config/routing.yml'
   prefix: /docs
+
+sonata_user_admin_security:
+  resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+  prefix: /admin
+
+sonata_user_admin_resetting:
+  resource: '@SonataUserBundle/Resources/config/routing/admin_resetting.xml'
+  prefix: /admin/resetting

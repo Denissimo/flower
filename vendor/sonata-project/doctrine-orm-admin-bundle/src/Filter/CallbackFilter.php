@@ -1,0 +1,144 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Sonata\DoctrineORMAdminBundle\Filter;
+
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface as BaseProxyQueryInterface;
+use Sonata\AdminBundle\Filter\Model\FilterData;
+use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQueryInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
+/**
+ * @final since sonata-project/doctrine-orm-admin-bundle 3.24
+ */
+class CallbackFilter extends Filter
+{
+    public function filter(BaseProxyQueryInterface $query, $alias, $field, $data)
+    {
+        /* NEXT_MAJOR: Remove this deprecation and update the typehint */
+        if (!$query instanceof ProxyQueryInterface) {
+            @trigger_error(sprintf(
+                'Passing %s as argument 1 to "%s()" is deprecated since sonata-project/doctrine-orm-admin-bundle 3.27'
+                .' and will throw a \TypeError error in version 4.0. You MUST pass an instance of %s instead.',
+                \get_class($query),
+                __METHOD__,
+                ProxyQueryInterface::class
+            ), \E_USER_DEPRECATED);
+        }
+
+        $callable = $this->getOption('callback');
+
+        if (!\is_callable($callable)) {
+            throw new \RuntimeException(sprintf('Please provide a valid callback option "filter" for field "%s"', $this->getName()));
+        }
+
+        // NEXT_MAJOR: Remove next line
+        $callbackReflection = $this->reflectCallable($callable);
+
+        // NEXT_MAJOR: Remove the entire if block
+        if (null !== $callbackReflection && isset($callbackReflection->getParameters()[3])) {
+            if ($callbackReflection->getParameters()[3]->hasType()
+                && FilterData::class === $callbackReflection->getParameters()[3]->getType()->getName()
+            ) {
+                $data = FilterData::fromArray($data);
+            } else {
+                @trigger_error(sprintf(
+                    'Not adding "%1$s" as type declaration for argument 4 is deprecated since'
+                    .' sonata-project/doctrine-orm-admin-bundle 3.34 and the argument will be a "%1$s" instance in version 4.0.',
+                    FilterData::class
+                ), \E_USER_DEPRECATED);
+            }
+        }
+
+        $isActive = \call_user_func($callable, $query, $alias, $field, $data);
+        if (!\is_bool($isActive)) {
+            @trigger_error(
+                'Using another return type than boolean for the callback option is deprecated'
+                .' since sonata-project/doctrine-orm-admin-bundle 3.25 and will throw an exception in version 4.0.',
+                \E_USER_DEPRECATED
+            );
+
+            // NEXT_MAJOR: Uncomment the following code instead of the deprecation.
+//            throw new \UnexpectedValueException(sprintf(
+//                'The callback should return a boolean, %s returned',
+//                \is_object($isActive) ? 'instance of "'.\get_class($isActive).'"' : '"'.\gettype($isActive).'"'
+//            ));
+        }
+
+        $this->active = $isActive;
+    }
+
+    public function getDefaultOptions()
+    {
+        return [
+            'callback' => null,
+            'field_type' => TextType::class,
+            'operator_type' => HiddenType::class,
+            'operator_options' => [],
+        ];
+    }
+
+    public function getRenderSettings()
+    {
+        return [DefaultType::class, [
+            'field_type' => $this->getFieldType(),
+            'field_options' => $this->getFieldOptions(),
+            'operator_type' => $this->getOption('operator_type'),
+            'operator_options' => $this->getOption('operator_options'),
+            'label' => $this->getLabel(),
+        ]];
+    }
+
+    /**
+     * @param mixed[] $data
+     *
+     * @return array
+     */
+    protected function association(BaseProxyQueryInterface $query, $data)
+    {
+        /* NEXT_MAJOR: Remove this deprecation and update the typehint */
+        if (!$query instanceof ProxyQueryInterface) {
+            @trigger_error(sprintf(
+                'Passing %s as argument 1 to %s() is deprecated since sonata-project/doctrine-orm-admin-bundle 3.27'
+                .' and will throw a \TypeError error in version 4.0. You MUST pass an instance of %s instead.',
+                \get_class($query),
+                __METHOD__,
+                ProxyQueryInterface::class
+            ));
+        }
+
+        $alias = $query->entityJoin($this->getParentAssociationMappings());
+
+        return [$this->getOption('alias', $alias), $this->getFieldName()];
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * extracted from https://github.com/getsentry/sentry-php/blob/4f6f8fa701e5db53c04f471b139e7d4f85831f17/src/Serializer/AbstractSerializer.php#L272-L283
+     */
+    private function reflectCallable(callable $callable): ?\ReflectionFunctionAbstract
+    {
+        if (\is_array($callable)) {
+            return new \ReflectionMethod($callable[0], $callable[1]);
+        } elseif ($callable instanceof \Closure || (\is_string($callable) && \function_exists($callable))) {
+            return new \ReflectionFunction($callable);
+        } elseif (\is_object($callable) && method_exists($callable, '__invoke')) {
+            return new \ReflectionMethod($callable, '__invoke');
+        }
+
+        return null;
+    }
+}

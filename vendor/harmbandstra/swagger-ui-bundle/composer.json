@@ -1,0 +1,40 @@
+{
+  "name": "harmbandstra/swagger-ui-bundle",
+  "type": "symfony-bundle",
+  "description": "Exposes swagger UI inside your Symfony project through a route (eg. /docs)",
+  "keywords": [
+    "swagger", "php", "symfony", "swagger-ui", "api", "doc", "bundle"
+  ],
+  "homepage": "https://github.com/harmbandstra/swagger-ui-bundle",
+  "license": "GPL-3.0-or-later",
+  "require": {
+    "php": "^7.2 || ^8.0",
+    "ext-json": "*",
+    "symfony/config": "^4.0|^5.0",
+    "symfony/dependency-injection": "^4.0|^5.0",
+    "symfony/framework-bundle": "^4.0|^5.0",
+    "symfony/http-kernel": "^4.0|^5.0",
+    "symfony/routing": "^4.0|^5.0",
+    "symfony/yaml": "^4.0|^5.0",
+    "swagger-api/swagger-ui": "^3.0"
+  },
+  "require-dev": {
+    "symfony/browser-kit": "^4.0|^5.0",
+    "composer/composer": "^1.8",
+    "phpspec/prophecy": "^1.8",
+    "phpunit/phpunit": "^8.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "HarmBandstra\\SwaggerUiBundle\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "HarmBandstra\\SwaggerUiBundle\\Tests\\": "tests/"
+    }
+  },
+  "include-path": [
+    "src"
+  ]
+}
