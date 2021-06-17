@@ -78,5 +78,13 @@ services:
             - [ setTokenStorage, [ "@security.token_storage" ] ]
         tags:
             - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native", group: "Flowers", label: "FlowerPhoto" }
+
+    admin.order:
+        class: App\Admin\OrderAdmin
+        arguments: [~, App\Entity\Order, ~]
+        calls:
+            - [ setTokenStorage, [ "@security.token_storage" ] ]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native", group: "Orders", label: "Orders" }
 #        calls:
 #            - [ setImagePath, [ "%env(IMAGES_PATH)%" ] ]

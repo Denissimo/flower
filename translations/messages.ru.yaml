@@ -47,6 +47,22 @@ Large One: Большая копия
 Created At: Создан
 Updated At: Обновлён
 
-message_close: Зкарыть сообщение
+message_close: Закрыть сообщение
 User: Пользователь
 Action: Действие
+
+Seller: Продавец
+Status: Статус
+Amount: Сумма
+Paid: Оплачен
+Order List: Список заказов
+Orders: Заказы
+
+Cancelled: Отменён
+New: Новый
+Created: Создан
+Check: Проверка
+Confirm: Подтверждение
+Complectation: Комплектация
+Delivery: Доставка
+Done: Исполнено
