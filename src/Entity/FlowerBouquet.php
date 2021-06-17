@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FlowerBouquetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DateTimeImmutable;
@@ -45,16 +47,6 @@ class FlowerBouquet
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity=FlowerPhoto::class, inversedBy="flowerBouquetByPhoto")
-     */
-    private $photo;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=FlowerPhoto::class, inversedBy="flowerBouquetByThumbnail")
-     */
-    private $thumbnail;
-
-    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $available;
@@ -92,6 +84,22 @@ class FlowerBouquet
      * @var DateTimeImmutable
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=FlowerPhoto::class, mappedBy="flowerBouquet")
+     */
+    private $flowerPhotos;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    public function __construct()
+    {
+        $this->flowerPhotos = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -157,31 +165,6 @@ class FlowerBouquet
 
         return $this;
     }
-
-    public function getPhoto(): ?FlowerPhoto
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto(?FlowerPhoto $photo): self
-    {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
-    public function getThumbnail(): ?FlowerPhoto
-    {
-        return $this->thumbnail;
-    }
-
-    public function setThumbnail(?FlowerPhoto $thumbnail): self
-    {
-        $this->thumbnail = $thumbnail;
-
-        return $this;
-    }
-
     public function getAvailable(): ?bool
     {
         return $this->available;
@@ -273,4 +256,59 @@ class FlowerBouquet
     {
         return $this->getNameRus();
     }
+
+    /**
+     * @return Collection|FlowerPhoto[]
+     */
+    public function getFlowerPhotos(): Collection
+    {
+        return $this->flowerPhotos;
+    }
+
+    public function addFlowerPhoto(FlowerPhoto $flowerPhoto): self
+    {
+        if (!$this->flowerPhotos->contains($flowerPhoto)) {
+            $this->flowerPhotos[] = $flowerPhoto;
+            $flowerPhoto->setFlowerBouquet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFlowerPhoto(FlowerPhoto $flowerPhoto): self
+    {
+        if ($this->flowerPhotos->removeElement($flowerPhoto)) {
+            // set the owning side to null (unless already changed)
+            if ($flowerPhoto->getFlowerBouquet() === $this) {
+                $flowerPhoto->setFlowerBouquet(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param FlowerBouquet|object $object
+     */
+    private function setPhotos($object): void
+    {
+        foreach ($object->getUserDocuments() as $photo) {
+
+            /** @var FlowerPhoto $photo */
+            $photo->setFlowerBouquet($object);
+        }
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
 }

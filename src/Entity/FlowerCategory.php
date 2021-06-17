@@ -25,7 +25,7 @@ class FlowerCategory
     private $nameRus;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $nameEng;
 
@@ -78,6 +78,12 @@ class FlowerCategory
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $h1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -255,6 +261,18 @@ class FlowerCategory
     public function setH1(?string $h1): self
     {
         $this->h1 = $h1;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

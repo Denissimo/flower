@@ -2,16 +2,32 @@
 
 namespace App\Admin;
 
+use App\Entity\FlowerBouquet;
 use App\Entity\FlowerPhoto;
+use App\Entity\User;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use DateTimeImmutable;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class FlowerPhotoAdmin extends AbstractAdmin
 {
+    /**
+     * @var  TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
+     * @param TokenStorageInterface $tokenStorage
+     */
+    public function setTokenStorage($tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
+
     /**
      * @var string
      */
@@ -39,7 +55,9 @@ final class FlowerPhotoAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('isThumbnail')
+        $formMapper
+            ->add('altRus')
+            ->add('largeOne')
             ->add('file', FileType::class, [
                 'required' => false
             ])
@@ -48,14 +66,15 @@ final class FlowerPhotoAdmin extends AbstractAdmin
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('isThumbnail');
+        $datagridMapper
+            ->add('altRus')
+            ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper->addIdentifier('id')
-            ->add('isThumbnail')
-            ->add('description')
+            ->add('user')
             ->add(
                 'name',
                 null,
@@ -65,15 +84,47 @@ final class FlowerPhotoAdmin extends AbstractAdmin
                     'row_align' => 'center'
                 ]
             )
+            ->add(
+                'largeOne',
+                null,
+                [
+                    'label' => 'Large One',
+                    'template' => "@sonata_templates/flower_large_one.html.twig",
+                    'row_align' => 'center'
+                ]
+            )
+            ->add('altRus')
+//            ->add('altEng')
+            ->add('createdAt',
+                null,
+                [
+                    'format' => 'd.m.Y h:i:s'
+                ])
+            ->add('updatedAt',
+                null,
+                [
+                    'format' => 'd.m.Y h:i:s'
+                ])
+            ->add('_action', null, [
+                'actions' => [
+                    'edit' => [],
+                ],
+            ])
+
         ;
     }
 
     /**
-     * @param FlowerPhoto $image
+     * @param FlowerPhoto $object
      */
-    public function prePersist($image)
+    public function prePersist($object)
     {
-        $this->manageFileUpload($image);
+        $this->manageFileUpload($object);
+         if (!$object->getUser() instanceof User) {
+            /** @var User $user */
+            $user = $this->tokenStorage->getToken()->getUser();
+            $object->setUser($user);
+        }
     }
 
     /**

@@ -1,0 +1,47 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20210617103459 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return '';
+    }
+
+    public function up(Schema $schema): void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE flower_bouquet ADD user_id INT NOT NULL');
+        $this->addSql('ALTER TABLE flower_bouquet ADD CONSTRAINT FK_C34D6780A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+        $this->addSql('CREATE INDEX IDX_C34D6780A76ED395 ON flower_bouquet (user_id)');
+        $this->addSql('ALTER TABLE flower_category ADD user_id INT NOT NULL');
+        $this->addSql('ALTER TABLE flower_category ADD CONSTRAINT FK_75D4CC32A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+        $this->addSql('CREATE INDEX IDX_75D4CC32A76ED395 ON flower_category (user_id)');
+        $this->addSql('ALTER TABLE flower_photo ADD user_id INT NOT NULL');
+        $this->addSql('ALTER TABLE flower_photo ADD CONSTRAINT FK_9EEB5C63A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+        $this->addSql('CREATE INDEX IDX_9EEB5C63A76ED395 ON flower_photo (user_id)');
+    }
+
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE flower_bouquet DROP FOREIGN KEY FK_C34D6780A76ED395');
+        $this->addSql('DROP INDEX IDX_C34D6780A76ED395 ON flower_bouquet');
+        $this->addSql('ALTER TABLE flower_bouquet DROP user_id');
+        $this->addSql('ALTER TABLE flower_category DROP FOREIGN KEY FK_75D4CC32A76ED395');
+        $this->addSql('DROP INDEX IDX_75D4CC32A76ED395 ON flower_category');
+        $this->addSql('ALTER TABLE flower_category DROP user_id');
+        $this->addSql('ALTER TABLE flower_photo DROP FOREIGN KEY FK_9EEB5C63A76ED395');
+        $this->addSql('DROP INDEX IDX_9EEB5C63A76ED395 ON flower_photo');
+        $this->addSql('ALTER TABLE flower_photo DROP user_id');
+    }
+}

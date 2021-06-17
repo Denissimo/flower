@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
-use DateTimeImmutable;
+use DateTimeInterface;
 
 class UploadedFile
 {
@@ -46,7 +46,7 @@ class UploadedFile
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
-     * @var ?DateTimeImmutable
+     * @var ?DateTimeInterface
      */
     protected $createdAt = null;
 
@@ -151,19 +151,19 @@ class UploadedFile
     }
 
     /**
-     * @return ?DateTimeImmutable
+     * @return ?DateTimeInterface
      */
-    public function getCreatedAt(): ?DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
     /**
-     * @param ?DateTimeImmutable $createdAt
+     * @param ?DateTimeInterface $createdAt
      *
      * @return UploadedFile
      */
-    public function setCreatedAt(?DateTimeImmutable $createdAt): UploadedFile
+    public function setCreatedAt(?DateTimeInterface $createdAt): UploadedFile
     {
         $this->createdAt = $createdAt;
 

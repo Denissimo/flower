@@ -2,19 +2,19 @@
 
 {% block field %}
     {% if value %}
-       {% set img_path = admin.imageShowPath ~ value %}
-{#        <img src = "{{ img_path }}" width="150px" />#}
+        {% set img_path = admin.imageShowPath ~ value.name %}
+        {#        <img src = "{{ img_path }}" width="150px" />#}
         {% set divStyle = "margin: 0 0 2px 2px; float: left; width: 50px; height: 50px; border-radius: 25px; display:inline-block;" %}
         {% set imgStyle = "width: 50px; height: 50px; border-radius: 25px;" %}
         {% set btnStyle = "margin: 0 0 0 0; padding: 0; cursor:pointer;" %}
         <!-- Button trigger modal -->
         <div style="{{ divStyle }}">
-            <a data-toggle="modal" data-target="#imageModel_{{ object.id }}" style="{{ btnStyle }}">
+            <a data-toggle="modal" data-target="#imageLargeModel_{{ object.id }}" style="{{ btnStyle }}">
                 <img src="{{ img_path }}" style="{{ imgStyle }}" alt="{{ object.altRus }}"/>
             </a>
         </div>
         <!-- Modal -->
-        <div class="modal fade" id="imageModel_{{ object.id }}" tabindex="-1" role="dialog"
+        <div class="modal fade" id="imageLargeModel_{{ object.id }}" tabindex="-1" role="dialog"
              aria-labelledby="myModalLabel_{{ object.id }}">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -24,7 +24,7 @@
                         <h4 class="modal-title" id="myModalLabel_{{ object.id }}">{{ object.altRus }}</h4>
                     </div>
                     <div class="modal-body">
-                        <img src="{{ admin.imageShowPath ~ object.name }}" alt="{{ object.altRus }}"/>
+                        <img src="{{ admin.imageShowPath ~ value.name }}" alt="{{ object.altRus }}"/>
                     </div>
                 </div>
             </div>

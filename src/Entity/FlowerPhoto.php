@@ -6,6 +6,7 @@ use App\Repository\FlowerPhotoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=FlowerPhotoRepository::class)
@@ -13,122 +14,143 @@ use Doctrine\ORM\Mapping as ORM;
 class FlowerPhoto extends UploadedFile
 {
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $isThumbnail;
+    private $altRus;
 
     /**
-     * @var string|null
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $altEng;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=FlowerBouquet::class, inversedBy="flowerPhotos")
+     */
+    private $flowerBouquet;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="datetime")
      */
-    private $description;
+    private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=FlowerBouquet::class, mappedBy="photo")
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $flowerBouquetByPhoto;
+    private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=FlowerBouquet::class, mappedBy="thumbnail")
+     * @ORM\OneToOne(targetEntity=FlowerPhoto::class, inversedBy="smallOne", cascade={"persist", "remove"})
      */
-    private $flowerBouquetByThumbnail;
-
-    public function __construct()
-    {
-        $this->flowerBouquetByPhoto = new ArrayCollection();
-    }
-
-    public function getIsThumbnail(): ?bool
-    {
-        return $this->isThumbnail;
-    }
-
-    public function setIsThumbnail(bool $isThumbnail): self
-    {
-        $this->isThumbnail = $isThumbnail;
-
-        return $this;
-    }
+    private $largeOne;
 
     /**
-     * @return string|null
+     * @ORM\OneToOne(targetEntity=FlowerPhoto::class, mappedBy="largeOne", cascade={"persist", "remove"})
      */
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     *
-     * @return FlowerPhoto
-     */
-    public function setDescription(string $description): FlowerPhoto
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|FlowerBouquet[]
-     */
-    public function getFlowerBouquetByPhoto(): Collection
-    {
-        return $this->flowerBouquetByPhoto;
-    }
-
-    public function addFlowerBouquetsPhoto(FlowerBouquet $flowerBouquetsPhoto): self
-    {
-        if (!$this->flowerBouquetByPhoto->contains($flowerBouquetsPhoto)) {
-            $this->flowerBouquetByPhoto[] = $flowerBouquetsPhoto;
-            $flowerBouquetsPhoto->setPhoto($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFlowerBouquetsPhoto(FlowerBouquet $flowerBouquetsPhoto): self
-    {
-        if ($this->flowerBouquetByPhoto->removeElement($flowerBouquetsPhoto)) {
-            // set the owning side to null (unless already changed)
-            if ($flowerBouquetsPhoto->getPhoto() === $this) {
-                $flowerBouquetsPhoto->setPhoto(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getFlowerBouquetByThumbnail(): ?FlowerBouquet
-    {
-        return $this->flowerBouquetByThumbnail;
-    }
-
-    public function setFlowerBouquetByThumbnail(?FlowerBouquet $flowerBouquetByThumbnail): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($flowerBouquetByThumbnail === null && $this->flowerBouquetByThumbnail !== null) {
-            $this->flowerBouquetByThumbnail->setThumbnail(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($flowerBouquetByThumbnail !== null && $flowerBouquetByThumbnail->getThumbnail() !== $this) {
-            $flowerBouquetByThumbnail->setThumbnail($this);
-        }
-
-        $this->flowerBouquetByThumbnail = $flowerBouquetByThumbnail;
-
-        return $this;
-    }
+    private $smallOne;
 
     /**
      * @return string
      */
     public function __toString()
     {
-        return $this->getDescription() ?? 'no description';
+        return $this->getAltRus() ?? 'no description';
 //        return '<img src="https://svalko.org/data/2013_08_08_12_02_pbs_twimg_com_media_BRIUKgTCMAIecyk.jpg" />';
+    }
+
+    public function getAltRus(): ?string
+    {
+        return $this->altRus;
+    }
+
+    public function setAltRus(?string $altRus): self
+    {
+        $this->altRus = $altRus;
+
+        return $this;
+    }
+
+    public function getAltEng(): ?string
+    {
+        return $this->altEng;
+    }
+
+    public function setAltEng(?string $altEng): self
+    {
+        $this->altEng = $altEng;
+
+        return $this;
+    }
+
+    public function getFlowerBouquet(): ?FlowerBouquet
+    {
+        return $this->flowerBouquet;
+    }
+
+    public function setFlowerBouquet(?FlowerBouquet $flowerBouquet): self
+    {
+        $this->flowerBouquet = $flowerBouquet;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getLargeOne(): ?self
+    {
+        return $this->largeOne;
+    }
+
+    public function setLargeOne(?self $largeOne): self
+    {
+        $this->largeOne = $largeOne;
+
+        return $this;
+    }
+
+    public function getSmallOne(): ?self
+    {
+        return $this->smallOne;
+    }
+
+    public function setSmallOne(?self $smallOne): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($smallOne === null && $this->smallOne !== null) {
+            $this->smallOne->setLargeOne(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($smallOne !== null && $smallOne->getLargeOne() !== $this) {
+            $smallOne->setLargeOne($this);
+        }
+
+        $this->smallOne = $smallOne;
+
+        return $this;
     }
 }
