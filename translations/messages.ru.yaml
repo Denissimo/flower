@@ -51,6 +51,8 @@ message_close: Закрыть сообщение
 User: Пользователь
 Action: Действие
 
+
+
 Seller: Продавец
 Status: Статус
 Amount: Сумма

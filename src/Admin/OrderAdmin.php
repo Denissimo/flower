@@ -44,8 +44,7 @@ final class OrderAdmin extends AbstractAdmin
                 ['choices' => array_flip(Order::$statuses)]
             )
             ->add('amount')
-            ->add('paid')
-        ;
+            ->add('paid');
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -54,8 +53,7 @@ final class OrderAdmin extends AbstractAdmin
             ->add('seller')
             ->add('status')
             ->add('amount')
-            ->add('paid')
-            ;
+            ->add('paid');
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -65,7 +63,12 @@ final class OrderAdmin extends AbstractAdmin
             ->add('seller')
             ->add('status',
                 'choice',
-                ['choices' => Order::$statuses])
+                [
+//                    'label' => 'Order.status',
+                    'choices' => Order::$statuses,
+                    'choice_translation_domain' => 'ru',
+                ]
+            )
             ->add('amount')
             ->add('paid', null, ['editable' => true])
             ->add('createdAt',
@@ -82,8 +85,7 @@ final class OrderAdmin extends AbstractAdmin
                 'actions' => [
                     'edit' => [],
                 ],
-            ])
-        ;
+            ]);
     }
 
 
