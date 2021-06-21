@@ -8,10 +8,13 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-final class FlowerCategoryAdmin extends AbstractAdmin
+final class FlowerShopAdmin extends AbstractAdmin
 {
     /**
      * @var  TokenStorageInterface
@@ -28,30 +31,24 @@ final class FlowerCategoryAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('nameRus')
-//            ->add('nameEng')
-            ->add('descRus')
-//            ->add('descEng')
-            ->add('leastQty')
-            ->add('leastSum')
-            ->add('sortIndex')
-            ->add('title')
-            ->add('keywords')
+        $formMapper
+            ->add('user')
+            ->add('name')
             ->add('description')
-            ->add('h1')
+            ->add(
+                'color',
+                ColorType::class
+            )
+
         ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('nameRus')
-//            ->add('nameEng')
-            ->add('leastQty')
-            ->add('leastSum')
-            ->add('title')
-            ->add('keywords')
+        $datagridMapper
+            ->add('user')
+            ->add('name')
             ->add('description')
-            ->add('h1')
         ;
     }
 
@@ -59,19 +56,22 @@ final class FlowerCategoryAdmin extends AbstractAdmin
     {
         $listMapper->addIdentifier('id')
             ->add('user')
-            ->add('nameRus')
-//            ->add('nameEng')
-            ->add('descRus')
-//            ->add('descEng')
-            ->add('leastQty')
-            ->add('leastSum')
-            ->add('sortIndex')
-            ->add('title')
-            ->add('keywords')
+            ->add('name')
             ->add('description')
-            ->add('h1')
+            ->add('color',
+                ColorType::class,
+                [
+//                    'editable' => true,
+                    'template' => "@sonata_templates/color_show.html.twig",
+                ]
+            )
             ->add('createdAt')
             ->add('updatedAt')
+            ->add('_action', null, [
+                'actions' => [
+                    'edit' => [],
+                ],
+            ])
         ;
     }
 

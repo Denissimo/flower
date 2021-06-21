@@ -51,8 +51,6 @@ message_close: Закрыть сообщение
 User: Пользователь
 Action: Действие
 
-
-
 Seller: Продавец
 Status: Статус
 Amount: Сумма
@@ -68,3 +66,9 @@ Confirm: Подтверждение
 Complectation: Комплектация
 Delivery: Доставка
 Done: Исполнено
+
+Flower Shop List: Список магазинов
+Flower Shop Create: Создать магазин
+FlowerShop: Магазины
+Color: Цвет
+Name: Наименование

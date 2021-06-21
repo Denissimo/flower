@@ -46,6 +46,7 @@
         "symfony/yaml": "4.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
+        "velhron/dadata-bundle": "^1.3",
         "vich/uploader-bundle": "^1.16"
     },
     "require-dev": {

@@ -96,6 +96,11 @@ class FlowerBouquet
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=FlowerShop::class, inversedBy="flowerBouquets")
+     */
+    private $shop;
+
     public function __construct()
     {
         $this->flowerPhotos = new ArrayCollection();
@@ -307,6 +312,18 @@ class FlowerBouquet
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getShop(): ?FlowerShop
+    {
+        return $this->shop;
+    }
+
+    public function setShop(?FlowerShop $shop): self
+    {
+        $this->shop = $shop;
 
         return $this;
     }

@@ -6,6 +6,8 @@ use App\Repository\FlowerCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use DateTimeInterface;
 
 /**
  * @ORM\Entity(repositoryClass=FlowerCategoryRepository::class)
@@ -84,6 +86,20 @@ class FlowerCategory
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     * @var DateTimeInterface
+     */
+    private $createdAt;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     * @var DateTimeInterface
+     */
+    private $updatedAt;
 
     public function __construct()
     {
@@ -273,6 +289,46 @@ class FlowerCategory
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTimeInterface
+     */
+    public function getCreatedAt(): DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTimeInterface $createdAt
+     *
+     * @return FlowerCategory
+     */
+    public function setCreatedAt(DateTimeInterface $createdAt): FlowerCategory
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTimeInterface
+     */
+    public function getUpdatedAt(): DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param DateTimeInterface $updatedAt
+     *
+     * @return FlowerCategory
+     */
+    public function setUpdatedAt(DateTimeInterface $updatedAt): FlowerCategory
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

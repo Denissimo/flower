@@ -621,6 +621,18 @@
     "twig/twig": {
         "version": "v3.2.1"
     },
+    "velhron/dadata-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "fe286c8dfc95885d4509da0a1ae3c3aed2bab0db"
+        },
+        "files": [
+            "./config/packages/dadata.yaml"
+        ]
+    },
     "vich/uploader-bundle": {
         "version": "1.5",
         "recipe": {

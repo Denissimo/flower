@@ -25,4 +25,5 @@ return [
     Sonata\DatagridBundle\SonataDatagridBundle::class => ['all' => true],
     Sonata\UserBundle\SonataUserBundle::class => ['all' => true],
     Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
+    Velhron\DadataBundle\VelhronDadataBundle::class => ['all' => true],
 ];

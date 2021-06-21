@@ -32,12 +32,18 @@ class User extends BaseUser implements UserInterface
      */
     private $sales;
 
+    /**
+     * @ORM\OneToMany(targetEntity=FlowerShop::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $flowerShops;
+
     public function __construct()
     {
         parent::__construct();
         // your own logic
         $this->orders = new ArrayCollection();
         $this->sales = new ArrayCollection();
+        $this->flowerShops = new ArrayCollection();
     }
 
     /**
@@ -94,6 +100,36 @@ class User extends BaseUser implements UserInterface
             // set the owning side to null (unless already changed)
             if ($sale->getSeller() === $this) {
                 $sale->setSeller(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FlowerShop[]
+     */
+    public function getFlowerShops(): Collection
+    {
+        return $this->flowerShops;
+    }
+
+    public function addFlowerShop(FlowerShop $flowerShop): self
+    {
+        if (!$this->flowerShops->contains($flowerShop)) {
+            $this->flowerShops[] = $flowerShop;
+            $flowerShop->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFlowerShop(FlowerShop $flowerShop): self
+    {
+        if ($this->flowerShops->removeElement($flowerShop)) {
+            // set the owning side to null (unless already changed)
+            if ($flowerShop->getUser() === $this) {
+                $flowerShop->setUser(null);
             }
         }
 
