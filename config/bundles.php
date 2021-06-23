@@ -26,4 +26,5 @@ return [
     Sonata\UserBundle\SonataUserBundle::class => ['all' => true],
     Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
     Velhron\DadataBundle\VelhronDadataBundle::class => ['all' => true],
+    Symfony\Bundle\AclBundle\AclBundle::class => ['all' => true],
 ];

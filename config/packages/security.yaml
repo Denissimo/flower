@@ -75,6 +75,8 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
+    access_decision_manager:
+        strategy: unanimous
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
@@ -95,3 +97,6 @@ security:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+
+acl:
+    connection: default

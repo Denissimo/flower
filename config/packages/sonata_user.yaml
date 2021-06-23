@@ -4,3 +4,6 @@ sonata_user:
     class:
         user: App\Entity\User
         group: App\Entity\UserGroup
+
+    security_acl: true
+    manager_type: orm # can be orm or mongodb

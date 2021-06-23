@@ -234,6 +234,9 @@
     "swagger-api/swagger-ui": {
         "version": "v3.41.1"
     },
+    "symfony/acl-bundle": {
+        "version": "v2.1.0"
+    },
     "symfony/asset": {
         "version": "v4.4.18"
     },

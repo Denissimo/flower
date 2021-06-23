@@ -9,6 +9,9 @@ parameters:
     images_show_path: '%env(IMAGES_SHOW_PATH)%'
     kernel_path: '%kernel.project_dir%'
 
+    parameters:
+        sonata.admin.security.mask.builder.class: Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -34,6 +37,10 @@ services:
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
+
+
+    security.acl.permission.map:
+        class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
