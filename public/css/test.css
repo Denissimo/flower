@@ -1,0 +1,14 @@
+.bg-white {
+    background: #ffffff;
+}
+
+.testdiv {
+    height: 500px;
+    background: repeating-linear-gradient(
+            0deg,
+            #FF0000,
+            /*#FF0000 125px,*/
+            /*#00FF00 125px,*/
+            #00FF00 250px
+    );
+}
