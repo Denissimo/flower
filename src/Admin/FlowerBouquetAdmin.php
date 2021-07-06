@@ -66,7 +66,19 @@ final class FlowerBouquetAdmin extends AbstractAdmin
 //            ])
 //            ->orderBy('d.priority');
 
-        $formMapper->add('nameRus')
+        $formMapper
+            ->add('user', ModelAutocompleteType::class, [
+                'property' => 'username',
+                'class' => User::class,
+                'required' => false
+            ])
+            ->add('shop', ModelType::class,
+                [
+                    'choice_translation_domain' => false,
+                    'required' => false,
+                ]
+            )
+            ->add('nameRus')
             ->add('descRus')
             ->add('price')
             ->add('leastQuantity')
@@ -112,6 +124,7 @@ final class FlowerBouquetAdmin extends AbstractAdmin
     {
         $listMapper->addIdentifier('id')
             ->add('user')
+            ->add('shop')
             ->add(
                 'Picture',
                 null,
@@ -124,6 +137,11 @@ final class FlowerBouquetAdmin extends AbstractAdmin
             ->add('leastQuantity')
             ->add('leastSum')
             ->add('sortIndex')
+            ->add('_action', null, [
+                'actions' => [
+                    'edit' => [],
+                ],
+            ])
         ;
     }
 

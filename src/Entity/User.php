@@ -38,6 +38,11 @@ class User extends BaseUser implements UserInterface
      */
     private $flowerShops;
 
+    /**
+     * @ORM\Column(type="string", length=64, nullable=true)
+     */
+    private $middlename;
+
     public function __construct()
     {
         parent::__construct();
@@ -133,6 +138,18 @@ class User extends BaseUser implements UserInterface
                 $flowerShop->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMiddlename(): ?string
+    {
+        return $this->middlename;
+    }
+
+    public function setMiddlename(?string $middlename): self
+    {
+        $this->middlename = $middlename;
 
         return $this;
     }
