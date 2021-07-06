@@ -74,3 +74,35 @@ Flower Photos: Фотографиии букетов
 Shop: Магазин
 Color: Цвет
 Name: Наименование
+
+Individual: Физическое лицо
+Individuals: Физические лица
+First Name: Имя
+Last Name: Фамилия
+Middle Name: Отчество
+Place Of Birth: Место рождения
+Date Of Birth: Дата рождения
+Date Of Birth String: Дата рождения
+Identity: Документ
+Residence: Адрес места жительства
+Snils: СНИЛС
+Individual List: Список физических лиц
+Individual Create: Создать физическое лицо
+
+Entrepreneur: ИП
+Entrepreneur List: Список ИП
+Entrepreneur Create: Создать ИП
+Inn: ИНН
+Ogrn: ОГРН
+Head: Руководитель
+Representative: Представитель
+
+Legal Entities: Юридические лица
+Short Name: Краткое наименование
+Legal Entity: Юридическое лицо
+Legal Entity List: Список юридических лиц
+Legal Entity Create: Создать юридическое лицо
+Full Name: Полное наименование
+Active: Активно
+Phone: Телефон
+Email: Емайл

@@ -43,6 +43,11 @@ class User extends BaseUser implements UserInterface
      */
     private $middlename;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Individual::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $individual;
+
     public function __construct()
     {
         parent::__construct();

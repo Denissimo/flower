@@ -96,4 +96,25 @@ services:
         calls:
             - [ setTokenStorage, [ "@security.token_storage" ] ]
         tags:
-            - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native",  group: "User Data", label: "FlowerShop" }
+            - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native",  group: "User Data", label: "FlowerShop", icon: '<i class="fa fa-user-circle-o"></i>'  }
+
+
+    admin.individual:
+        class: App\Admin\IndividualAdmin
+        arguments: [~, App\Entity\Individual, ~]
+        calls:
+            - [ setTokenStorage, [ "@security.token_storage" ] ]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native", label: 'Individuals', group: "User Data"}
+
+    admin.entrepreneur:
+        class: App\Admin\EntrepreneurAdmin
+        arguments: [~, App\Entity\Entrepreneur, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native", label: 'Entrepreneur', group: "User Data" }
+
+    admin.legal_entity:
+        class: App\Admin\LegalEntityAdmin
+        arguments: [~, App\Entity\LegalEntity, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native", label: 'Legal Entities', group: "User Data" }

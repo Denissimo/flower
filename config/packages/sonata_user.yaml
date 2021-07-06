@@ -4,3 +4,10 @@ sonata_user:
     class:
         user: App\Entity\User
         group: App\Entity\UserGroup
+
+
+    admin: # Admin Classes
+        user:
+            class: App\Admin\UserAdmin # there define your extended admin class
+            #            controller: SonataUserBundle:UserCURD
+            translation: SonataUserBundle
