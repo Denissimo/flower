@@ -66,6 +66,16 @@ class FlowerShop
      */
     private $logo;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Entrepreneur::class, inversedBy="flowerShops")
+     */
+    private $entrepreneur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=LegalEntity::class, inversedBy="flowerShops")
+     */
+    private $legalEntity;
+
     public function __construct()
     {
         $this->flowerBouquets = new ArrayCollection();
@@ -193,5 +203,29 @@ class FlowerShop
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function getEntrepreneur(): ?Entrepreneur
+    {
+        return $this->entrepreneur;
+    }
+
+    public function setEntrepreneur(?Entrepreneur $entrepreneur): self
+    {
+        $this->entrepreneur = $entrepreneur;
+
+        return $this;
+    }
+
+    public function getLegalEntity(): ?LegalEntity
+    {
+        return $this->legalEntity;
+    }
+
+    public function setLegalEntity(?LegalEntity $legalEntity): self
+    {
+        $this->legalEntity = $legalEntity;
+
+        return $this;
     }
 }

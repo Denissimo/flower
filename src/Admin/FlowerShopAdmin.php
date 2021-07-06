@@ -33,6 +33,8 @@ final class FlowerShopAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('user')
+            ->add('entrepreneur')
+            ->add('legalEntity')
             ->add('name')
             ->add('description')
             ->add(
@@ -56,6 +58,8 @@ final class FlowerShopAdmin extends AbstractAdmin
     {
         $listMapper->addIdentifier('id')
             ->add('user')
+            ->add('entrepreneur')
+            ->add('legalEntity')
             ->add('name')
             ->add('description')
             ->add('color',

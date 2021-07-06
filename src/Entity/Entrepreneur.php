@@ -77,9 +77,15 @@ class Entrepreneur
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity=FlowerShop::class, mappedBy="entrepreneur")
+     */
+    private $flowerShops;
+
     public function __construct()
     {
         $this->representative = new ArrayCollection();
+        $this->flowerShops = new ArrayCollection();
     }
 
     public function getId(): int
@@ -233,6 +239,36 @@ class Entrepreneur
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FlowerShop[]
+     */
+    public function getFlowerShops(): Collection
+    {
+        return $this->flowerShops;
+    }
+
+    public function addFlowerShop(FlowerShop $flowerShop): self
+    {
+        if (!$this->flowerShops->contains($flowerShop)) {
+            $this->flowerShops[] = $flowerShop;
+            $flowerShop->setEntrepreneur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFlowerShop(FlowerShop $flowerShop): self
+    {
+        if ($this->flowerShops->removeElement($flowerShop)) {
+            // set the owning side to null (unless already changed)
+            if ($flowerShop->getEntrepreneur() === $this) {
+                $flowerShop->setEntrepreneur(null);
+            }
+        }
 
         return $this;
     }
