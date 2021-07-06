@@ -20,6 +20,7 @@ class Order
     private const STATUS_COMPLECT = 5;
     private const STATUS_DELIVERY = 6;
     private const STATUS_DONE = 7;
+    private const STATUS_DELAY = 8;
 
     public static $statuses = [
         self::STATUS_CANCELLED => 'Cancelled',
@@ -30,6 +31,7 @@ class Order
         self::STATUS_COMPLECT => 'Complectation',
         self::STATUS_DELIVERY => 'Delivery',
         self::STATUS_DONE => 'Done',
+        self::STATUS_DELAY => 'Delay',
     ];
 
     /**

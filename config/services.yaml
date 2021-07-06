@@ -62,14 +62,6 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native",  group: "Flowers", label: "FlowerCategory" }
 
-    admin.flower_shop:
-        class: App\Admin\FlowerShopAdmin
-        arguments: [~, App\Entity\FlowerShop, ~]
-        calls:
-            - [ setTokenStorage, [ "@security.token_storage" ] ]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native",  group: "Flowers", label: "FlowerShop" }
-
     admin.flower_bouquet:
         class: App\Admin\FlowerBouquetAdmin
         arguments: [~, App\Entity\FlowerBouquet, ~]
@@ -96,3 +88,12 @@ services:
             - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native", group: "Orders", label: "Orders" }
 #        calls:
 #            - [ setImagePath, [ "%env(IMAGES_PATH)%" ] ]
+
+
+    admin.flower_shop:
+        class: App\Admin\FlowerShopAdmin
+        arguments: [~, App\Entity\FlowerShop, ~]
+        calls:
+            - [ setTokenStorage, [ "@security.token_storage" ] ]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label_translator_strategy: "sonata.admin.label.strategy.native",  group: "User Data", label: "FlowerShop" }
